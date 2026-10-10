@@ -106,9 +106,15 @@ In your GitHub repo → **Settings**:
 > Generate the deploy key with `ssh-keygen -t ed25519`, put the **public** key in
 > the server's `~/.ssh/authorized_keys`, and paste the **private** key into `SSH_KEY`.
 >
-> `GHCR_TOKEN`: create at GitHub → Settings → Developer settings → Personal access
-> tokens (classic) with the `read:packages` scope. (Alternatively, set the GHCR
-> package visibility to *Public* and you can skip the server login.)
+> **`GHCR_TOKEN`** (required to pull the private image on the server): create a
+> *Personal access token (classic)* at GitHub → *Settings → Developer settings →
+> Personal access tokens (classic)* with the **`read:packages`** scope, and add it
+> as the `GHCR_TOKEN` secret. Without it, the deploy step fails with
+> `Cannot perform an interactive login from a non TTY device`.
+>
+> **Alternative (no token):** make the package public — GitHub → your profile →
+> *Packages* → `milven-web` → *Package settings* → *Change visibility → Public*.
+> You can then leave `GHCR_TOKEN` unset.
 
 ## 4. Push the code
 
@@ -217,6 +223,9 @@ docker compose -f docker-compose.prod.yml exec db \
 
 ## Troubleshooting
 
+- **`Error: Cannot perform an interactive login from a non TTY device`** →
+  the `GHCR_TOKEN` secret is missing/empty. Add a PAT with `read:packages` (see
+  step 3b), or make the GHCR package public. Re-run the workflow after adding it.
 - **`denied` when pulling the image** → the server isn't authenticated to GHCR.
   Check the `GHCR_TOKEN` secret has `read:packages`, or make the package public.
 - **Migrations fail on start** → verify `DATABASE_URL`/`POSTGRES_PASSWORD` in
