@@ -38,7 +38,7 @@ docker --version && docker compose version
 Create the deploy directory:
 
 ```bash
-sudo mkdir -p /opt/milven && sudo chown $USER /opt/milven
+sudo mkdir -p /opt/milven-website && sudo chown $USER /opt/milven-website
 ```
 
 ## 2. Server environment file
@@ -46,7 +46,7 @@ sudo mkdir -p /opt/milven && sudo chown $USER /opt/milven
 Copy the template and fill it in:
 
 ```bash
-cd /opt/milven
+cd /opt/milven-website
 nano .env
 ```
 
@@ -93,7 +93,7 @@ In your GitHub repo → **Settings**:
 | `SSH_USER` | `ubuntu` | SSH user |
 | `SSH_KEY` | `-----BEGIN OPENSSH PRIVATE KEY-----…` | Private key **contents** |
 | `SSH_PORT` | `22` | SSH port |
-| `DEPLOY_PATH` | `/opt/milven` | Directory from step 1 |
+| `DEPLOY_PATH` | `/opt/milven-website` | Directory from step 1 |
 | `GHCR_TOKEN` | `ghp_…` | A PAT (classic) with **`read:packages`** so the server can pull the image |
 
 **Variables** (Repository variables):
@@ -130,7 +130,7 @@ The pipeline deploys the stack, but an empty database needs seeding **once**
 (creates the admin user, pages, and insights):
 
 ```bash
-cd /opt/milven
+cd /opt/milven-website
 docker compose -f docker-compose.prod.yml run --rm web npx tsx prisma/seed.ts
 ```
 
@@ -190,7 +190,7 @@ git push
 Or deploy manually on the server:
 
 ```bash
-cd /opt/milven
+cd /opt/milven-website
 docker compose -f docker-compose.prod.yml pull
 docker compose -f docker-compose.prod.yml up -d
 ```
@@ -220,7 +220,7 @@ docker compose -f docker-compose.prod.yml exec db \
 - **`denied` when pulling the image** → the server isn't authenticated to GHCR.
   Check the `GHCR_TOKEN` secret has `read:packages`, or make the package public.
 - **Migrations fail on start** → verify `DATABASE_URL`/`POSTGRES_PASSWORD` in
-  `/opt/milven/.env` and that the `db` container is healthy (`docker compose ps`).
+  `/opt/milven-website/.env` and that the `db` container is healthy (`docker compose ps`).
 - **Uploaded images disappear after deploy** → they are stored in the `uploads`
   Docker volume (persisted). For multi-server setups, switch to S3/R2 (see README).
 - **`next build` runs at image build time** with a dummy database URL; pages
