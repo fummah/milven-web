@@ -1,23 +1,45 @@
 import { prisma } from "@/lib/prisma"
 import type { GlobalSettings } from "@/lib/content-types"
 import { defaultSettings } from "@/lib/defaults"
+import { seedPages, seedInsights } from "@/lib/seed-content"
 
 export async function getSettings(): Promise<GlobalSettings> {
   try {
     const row = await prisma.siteSetting.findUnique({ where: { id: "global" } })
-    if (!row?.data) return defaultSettings
-    return row.data as unknown as GlobalSettings
+    if (row?.data) return row.data as unknown as GlobalSettings
   } catch {
-    return defaultSettings
+    /* fall through */
+  }
+  return defaultSettings
+}
+
+function fallbackPage(slug: string) {
+  const p = seedPages[slug]
+  if (!p) return null
+  return {
+    id: `seed-${slug}`,
+    slug,
+    title: p.title,
+    seoTitle: p.seoTitle ?? null,
+    seoDesc: p.seoDesc ?? null,
+    heroTitle: p.heroTitle ?? null,
+    heroText: p.heroText ?? null,
+    heroImage: p.heroImage ?? null,
+    content: p.content,
+    published: true,
+    createdAt: new Date(0),
+    updatedAt: new Date(0)
   }
 }
 
 export async function getPage(slug: string) {
   try {
-    return await prisma.page.findUnique({ where: { slug } })
+    const page = await prisma.page.findUnique({ where: { slug } })
+    if (page) return page
   } catch {
-    return null
+    /* fall through to default content */
   }
+  return fallbackPage(slug)
 }
 
 export async function getPages() {
@@ -28,23 +50,74 @@ export async function getPages() {
   }
 }
 
+function fallbackInsights() {
+  const now = Date.now()
+  return seedInsights.map((i, idx) => ({
+    id: `seed-${i.slug}`,
+    slug: i.slug,
+    title: i.title,
+    excerpt: i.excerpt ?? null,
+    body: i.body,
+    category: i.category ?? null,
+    image: i.image ?? null,
+    author: i.author ?? null,
+    authorRole: i.authorRole ?? null,
+    readMinutes: i.readMinutes ?? null,
+    featured: Boolean(i.featured),
+    published: true,
+    publishedAt: new Date(now - idx * 86400000),
+    seoTitle: null as string | null,
+    seoDesc: null as string | null,
+    createdAt: new Date(now),
+    updatedAt: new Date(now)
+  }))
+}
+
 export async function getInsights() {
   try {
-    return await prisma.insight.findMany({
+    const rows = await prisma.insight.findMany({
       where: { published: true },
       orderBy: [{ featured: "desc" }, { publishedAt: "desc" }]
     })
+    if (rows.length > 0) return rows
   } catch {
-    return []
+    /* fall through */
   }
+  return fallbackInsights()
 }
 
 export async function getInsight(slug: string) {
   try {
-    return await prisma.insight.findUnique({ where: { slug } })
+    const item = await prisma.insight.findUnique({ where: { slug } })
+    if (item) return item
   } catch {
-    return null
+    /* fall through */
   }
+  return fallbackInsights().find((i) => i.slug === slug) ?? null
+}
+
+export async function getRelatedInsights(
+  slug: string,
+  category?: string | null,
+  take = 3
+) {
+  try {
+    const rows = await prisma.insight.findMany({
+      where: {
+        published: true,
+        slug: { not: slug },
+        ...(category ? { category } : {})
+      },
+      orderBy: { publishedAt: "desc" },
+      take
+    })
+    if (rows.length > 0) return rows
+  } catch {
+    /* fall through */
+  }
+  return fallbackInsights()
+    .filter((i) => i.slug !== slug && (!category || i.category === category))
+    .slice(0, take)
 }
 
 export async function getPageMetadata(
@@ -58,21 +131,5 @@ export async function getPageMetadata(
     description: page?.seoDesc || fallback.description,
     settings,
     page
-  }
-}
-
-export async function getRelatedInsights(slug: string, category?: string | null, take = 3) {
-  try {
-    return await prisma.insight.findMany({
-      where: {
-        published: true,
-        slug: { not: slug },
-        ...(category ? { category } : {})
-      },
-      orderBy: { publishedAt: "desc" },
-      take
-    })
-  } catch {
-    return []
   }
 }
