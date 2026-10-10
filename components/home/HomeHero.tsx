@@ -21,6 +21,29 @@ const item = {
   }
 }
 
+function HeroUnderline() {
+  return (
+    <svg
+      viewBox="0 0 300 12"
+      preserveAspectRatio="none"
+      className="h-full w-full"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id="hero-underline" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#B9852F" />
+          <stop offset="45%" stopColor="#D9AE5F" />
+          <stop offset="100%" stopColor="#C89A45" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M1.5 6.4 C 44 1.8, 108 0.9, 168 2.7 C 224 4.4, 261 5.9, 298.5 4.1 C 264 9.6, 209 11.3, 150 10.7 C 92 10.1, 42 9.6, 1.5 6.4 Z"
+        fill="url(#hero-underline)"
+      />
+    </svg>
+  )
+}
+
 export function HomeHero({
   eyebrow,
   title,
@@ -106,15 +129,19 @@ export function HomeHero({
                           {base}
                           <span className="text-gold-500">.</span>
                           {reduce ? (
-                            <span className="absolute -bottom-2 left-0 h-1 w-full rounded-full bg-gold-500" />
+                            <span className="pointer-events-none absolute -bottom-2.5 left-0 h-3 w-full">
+                              <HeroUnderline />
+                            </span>
                           ) : (
                             <motion.span
                               initial={{ scaleX: 0 }}
                               animate={{ scaleX: 1 }}
                               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
                               style={{ originX: 0 }}
-                              className="absolute -bottom-2 left-0 h-1 w-full rounded-full bg-gradient-to-r from-gold-500 to-gold-400"
-                            />
+                              className="pointer-events-none absolute -bottom-2.5 left-0 h-3 w-full"
+                            >
+                              <HeroUnderline />
+                            </motion.span>
                           )}
                         </span>
                       ) : (
