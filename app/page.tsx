@@ -7,7 +7,7 @@ import { ServiceCard } from "@/components/ServiceCard"
 import { CtaBand } from "@/components/CtaBand"
 import { SectionHeading } from "@/components/SectionHeading"
 import { Reveal, RevealStagger, StaggerItem } from "@/components/motion/Reveal"
-import { HeroBackground } from "@/components/HeroBackground"
+import { HomeHero } from "@/components/home/HomeHero"
 import { CountUp } from "@/components/CountUp"
 import { getPage, getInsights, getSettings } from "@/lib/site"
 import { defaultSettings } from "@/lib/defaults"
@@ -43,92 +43,19 @@ export default async function Home() {
   return (
     <main>
       {/* HERO */}
-      <section className="relative overflow-hidden bg-cream lg:flex lg:min-h-[calc(100vh-7.5rem)] lg:items-center">
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-dots opacity-70 lg:w-[52%]" />
-
-        {/* desktop diagonal image */}
-        <div className="absolute inset-y-0 right-0 hidden w-[56%] lg:block">
-          <div
-            className="absolute inset-0 bg-gradient-to-b from-gold-400 to-gold-600"
-            style={{ clipPath: "polygon(16% 0, 100% 0, 100% 100%, 0 100%)" }}
-          />
-          <div
-            className="absolute inset-0 overflow-hidden"
-            style={{ clipPath: "polygon(18% 0, 100% 0, 100% 100%, 2% 100%)" }}
-          >
-            <HeroBackground images={heroImages} />
-            <div className="absolute inset-0 bg-navy-950/25" />
-          </div>
-        </div>
-
-        <div className="container-page relative w-full">
-          <div className="grid items-center gap-10 lg:grid-cols-2">
-            <div className="py-12 lg:py-20 lg:pr-8">
-              <Reveal>
-                <p className="eyebrow mb-6">
-                  <span className="h-px w-8 bg-gold-500" />
-                  {content.eyebrow || "African Advisory & Transformation"}
-                </p>
-              </Reveal>
-              <Reveal delay={0.08}>
-                <h1 className="text-balance font-sans text-4xl font-extrabold leading-[1.05] tracking-tight text-navy-900 sm:text-5xl lg:text-[3.5rem]">
-                  {(
-                    page?.heroTitle ||
-                    "Better Decisions. Better Businesses. Better Leaders."
-                  ).replace(/\.$/, "")}
-                  <span className="text-gold-500">.</span>
-                </h1>
-              </Reveal>
-              <Reveal delay={0.16}>
-                <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
-                  {page?.heroText}
-                </p>
-              </Reveal>
-              <Reveal delay={0.24}>
-                <div className="mt-9 flex flex-wrap gap-3">
-                  <Button asChild size="lg">
-                    <Link href={s.cta.primaryHref}>
-                      {s.cta.primaryLabel}
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" size="lg">
-                    <Link href="/services">
-                      {s.cta.secondaryLabel}
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </Reveal>
-            </div>
-
-            {/* mobile image */}
-            <div className="relative pb-8 lg:hidden">
-              <div className="relative h-64 overflow-hidden rounded-2xl sm:h-80">
-                <HeroBackground images={heroImages} />
-                <div className="absolute inset-0 bg-navy-950/25" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* floating card */}
-        <div className="absolute bottom-10 left-1/2 z-20 hidden w-auto rounded-2xl bg-white p-5 shadow-premium lg:block lg:left-[42%]">
-          <div className="flex items-center gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cream text-gold-600 ring-1 ring-gold-500/30">
-              <Icon name="layers" className="h-6 w-6" />
-            </span>
-            <div>
-              <p className="whitespace-nowrap font-sans text-lg font-bold leading-tight text-navy-900">
-                Three integrated capabilities
-              </p>
-              <p className="whitespace-nowrap text-sm text-slate-500">
-                Advisory · Systems · Academy
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeHero
+        eyebrow={content.eyebrow || "African Advisory & Transformation"}
+        title={
+          page?.heroTitle ||
+          "Better Decisions. Better Businesses. Better Leaders."
+        }
+        text={page?.heroText || ""}
+        images={heroImages}
+        primaryLabel={s.cta.primaryLabel}
+        primaryHref={s.cta.primaryHref}
+        secondaryLabel={s.cta.secondaryLabel}
+        secondaryHref="/services"
+      />
 
       {/* STATS BAND */}
       <section className="bg-navy-950 text-white">

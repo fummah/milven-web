@@ -1,29 +1,23 @@
 "use client"
 
-import * as React from "react"
 import Image from "next/image"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 export function HeroBackground({
   images,
-  interval = 6500
+  index = 0,
+  onSelect,
+  showDots = true
 }: {
   images: string[]
-  interval?: number
+  index?: number
+  onSelect?: (i: number) => void
+  showDots?: boolean
 }) {
   const reduce = useReducedMotion()
-  const slides = React.useMemo(() => images.filter(Boolean), [images])
-  const [index, setIndex] = React.useState(0)
-
-  React.useEffect(() => {
-    if (reduce || slides.length < 2) return
-    const id = setInterval(
-      () => setIndex((i) => (i + 1) % slides.length),
-      interval
-    )
-    return () => clearInterval(id)
-  }, [reduce, slides.length, interval])
+  const slides = images.filter(Boolean)
+  const current = reduce ? 0 : index % slides.length
 
   if (slides.length === 0) return null
 
@@ -31,7 +25,7 @@ export function HeroBackground({
     <div className="absolute inset-0 overflow-hidden">
       <AnimatePresence>
         <motion.div
-          key={index}
+          key={current}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -39,10 +33,10 @@ export function HeroBackground({
           className="absolute inset-0"
         >
           <Image
-            src={slides[index]}
+            src={slides[current]}
             alt=""
             fill
-            priority={index === 0}
+            priority={current === 0}
             sizes="100vw"
             className={cn(
               "object-cover object-[60%_center] brightness-110 contrast-[1.02]",
@@ -52,18 +46,16 @@ export function HeroBackground({
         </motion.div>
       </AnimatePresence>
 
-      {slides.length > 1 && !reduce && (
+      {showDots && slides.length > 1 && !reduce && onSelect && (
         <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2.5 rounded-full border border-white/10 bg-navy-950/50 px-4 py-2.5 backdrop-blur-sm">
           {slides.map((_, i) => (
             <button
               key={i}
               aria-label={`Show hero image ${i + 1}`}
-              onClick={() => setIndex(i)}
+              onClick={() => onSelect(i)}
               className={cn(
                 "h-2 rounded-full transition-all duration-500",
-                i === index
-                  ? "w-8 bg-gold-500"
-                  : "w-2 bg-white/50 hover:bg-white/90"
+                i === current ? "w-8 bg-gold-500" : "w-2 bg-white/50 hover:bg-white/90"
               )}
             />
           ))}
