@@ -4,6 +4,7 @@ import Link from "next/link"
 import { PageHero } from "@/components/PageHero"
 import { CtaBand } from "@/components/CtaBand"
 import { SectionHeading } from "@/components/SectionHeading"
+import { SectionTabs } from "@/components/SectionTabs"
 import { Icon } from "@/components/Icon"
 import { Reveal, RevealStagger, StaggerItem } from "@/components/motion/Reveal"
 import { getPage, getPageMetadata, getInsights } from "@/lib/site"
@@ -62,19 +63,7 @@ export default async function AdvisoryPage() {
       />
 
       {/* STICKY SUBNAV */}
-      <div className="sticky top-16 z-30 border-b border-navy-100/70 bg-white/90 backdrop-blur-lg">
-        <div className="container-page scrollbar-none flex gap-1 overflow-x-auto py-3">
-          {subnav.map((s) => (
-            <a
-              key={s.href}
-              href={s.href}
-              className="whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium text-navy-500 transition-colors hover:bg-cream hover:text-navy-900"
-            >
-              {s.label}
-            </a>
-          ))}
-        </div>
-      </div>
+      <SectionTabs items={subnav} />
 
       {/* OVERVIEW */}
       <section id="overview" className="section scroll-mt-32">
