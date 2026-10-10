@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: milven
+      POSTGRES_USER: milven
+      POSTGRES_PASSWORD: milven
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://milven:milven@db:5432/milven?schema=public
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      CONTACT_TO_EMAIL: advisory@milven.co.zw
+      CONTACT_FROM_EMAIL: ${CONTACT_FROM_EMAIL}
+    volumes:
+      - uploads:/app/public/uploads
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+  uploads:

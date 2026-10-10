@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Page {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  seoTitle    String?
+  seoDesc     String?
+  heroTitle   String?
+  heroText    String?
+  heroImage   String?
+  content     Json
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Insight {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  title         String
+  excerpt       String?
+  body          String
+  category      String?
+  image         String?
+  author        String?
+  authorRole    String?
+  readMinutes   Int?
+  featured      Boolean   @default(false)
+  published     Boolean   @default(true)
+  publishedAt   DateTime  @default(now())
+  seoTitle      String?
+  seoDesc       String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model ContactSubmission {
+  id              String   @id @default(cuid())
+  name            String
+  organisation    String?
+  role            String?
+  email           String
+  telephone       String?
+  service         String?
+  message         String
+  preferredMethod String?
+  status          String   @default("NEW")
+  emailed         Boolean  @default(false)
+  emailError      String?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  alt       String?
+  folder    String   @default("uploads")
+  mime      String?
+  size      Int?
+  width     Int?
+  height    Int?
+  createdAt DateTime @default(now())
+}
+
+model SiteSetting {
+  id        String   @id @default("global")
+  data      Json
+  updatedAt DateTime @updatedAt
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  lastLoginAt  DateTime?
+}
