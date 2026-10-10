@@ -97,8 +97,18 @@ jobs:
           script: |
             set -e
 
-            sudo mkdir -p /opt/milven-website
-            sudo chown -R $USER:$USER /opt/milven-website
+            mkdir -p /opt/milven-website
+
+            echo "Server directory:"
+            ls -ld /opt/milven-website
+
+            echo "Checking write access..."
+            test -w /opt/milven-website || {
+              echo "ERROR: SSH user cannot write to /opt/milven-website"
+              echo "Run this manually on the server once:"
+              echo "sudo chown -R aaa:aaa /opt/milven-website"
+              exit 1
+            }
 
             echo "Server directory ready."
 
@@ -178,7 +188,7 @@ jobs:
 
             echo "Files OK."
 
-            echo "Validating Compose..."
+            echo "Validating Docker Compose..."
             docker compose -f docker-compose.prod.yml config > /dev/null
 
             echo "Building application..."
@@ -187,8 +197,32 @@ jobs:
             echo "Starting database..."
             docker compose -f docker-compose.prod.yml up -d db
 
-            echo "Waiting for database..."
-            sleep 10
+            echo "Waiting for PostgreSQL..."
+
+            for i in $(seq 1 30); do
+              STATUS=$(docker inspect \
+                --format='{{.State.Health.Status}}' \
+                milven_website_db 2>/dev/null || echo "unknown")
+
+              echo "Database status: $STATUS"
+
+              if [ "$STATUS" = "healthy" ]; then
+                echo "Database is healthy."
+                break
+              fi
+
+              if [ "$i" -eq 30 ]; then
+                echo "ERROR: Database did not become healthy."
+                docker compose -f docker-compose.prod.yml logs --tail=100 db
+                exit 1
+              fi
+
+              sleep 2
+            done
+
+            echo "Checking Prisma migration status..."
+            docker compose -f docker-compose.prod.yml run --rm web \
+              npx prisma migrate status
 
             echo "Running Prisma migrations..."
             docker compose -f docker-compose.prod.yml run --rm web \
@@ -203,6 +237,17 @@ jobs:
             echo "Container status:"
             docker compose -f docker-compose.prod.yml ps
 
+            echo "Checking web container..."
+            WEB_RUNNING=$(docker inspect \
+              -f '{{.State.Running}}' \
+              milven_website_web 2>/dev/null || echo false)
+
+            if [ "$WEB_RUNNING" != "true" ]; then
+              echo "ERROR: milven_website_web is not running."
+              docker compose -f docker-compose.prod.yml logs --tail=100 web
+              exit 1
+            fi
+
             echo "Health check..."
             curl --fail \
               --silent \
@@ -211,7 +256,9 @@ jobs:
               http://127.0.0.1:3000/ \
               > /dev/null
 
-            echo "Cleaning old Docker images..."
+            echo "Health check passed."
+
+            echo "Cleaning dangling Docker images..."
             docker image prune -f
 
             echo "======================================"
