@@ -108,6 +108,10 @@ const config: Config = {
           "0%": { transform: "scale(1.04)" },
           "100%": { transform: "scale(1.16)" }
         },
+        heroIn: {
+          "0%": { opacity: "0", transform: "scale(1.06)" },
+          "100%": { opacity: "1", transform: "scale(1)" }
+        },
         shimmer: {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" }
@@ -119,6 +123,7 @@ const config: Config = {
         "fade-up": "fade-up 0.6s var(--tw-ease, cubic-bezier(0.22,1,0.36,1)) both",
         marquee: "marquee 32s linear infinite",
         kenburns: "kenburns 8s ease-out forwards",
+        "hero-in": "heroIn 1.1s cubic-bezier(0.22,1,0.36,1) both",
         shimmer: "shimmer 2.5s linear infinite"
       }
     }

@@ -8,6 +8,10 @@ import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/Icon"
 import { HeroBackground } from "@/components/HeroBackground"
 
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } }
+}
 const lineGroup = {
   hidden: {},
   show: { transition: { staggerChildren: 0.14 } }
@@ -91,6 +95,12 @@ export function HomeHero({
 
       {/* desktop diagonal image */}
       <div className="absolute inset-y-0 right-0 hidden w-[56%] lg:block">
+        <motion.div
+          initial={reduce ? false : { opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-0"
+        >
         <div
           className="absolute inset-0 bg-gradient-to-b from-gold-400 to-gold-600"
           style={{ clipPath: "polygon(16% 0, 100% 0, 100% 100%, 0 100%)" }}
@@ -102,21 +112,24 @@ export function HomeHero({
           <HeroBackground images={slides} index={index} onSelect={setIndex} showDots />
           <div className="absolute inset-0 bg-navy-950/25" />
         </div>
+        </motion.div>
       </div>
 
       <div className="container-page relative w-full">
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div className="py-12 lg:py-20 lg:pr-8">
-            <div>
-              <p className="eyebrow mb-6">
+            <motion.div
+              variants={container}
+              initial={reduce ? false : "hidden"}
+              animate="show"
+            >
+              <motion.p variants={item} className="eyebrow mb-6">
                 <span className="h-px w-8 bg-gold-500" />
                 {eyebrow}
-              </p>
+              </motion.p>
 
               <motion.h1
                 variants={lineGroup}
-                initial={reduce ? false : "hidden"}
-                animate="show"
                 className="text-balance font-sans text-4xl font-extrabold leading-[1.05] tracking-tight text-navy-900 sm:text-5xl lg:text-[3.5rem]"
               >
                 {lines.map((line, i) => {
@@ -152,11 +165,14 @@ export function HomeHero({
                 })}
               </motion.h1>
 
-              <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+              <motion.p
+                variants={item}
+                className="mt-6 max-w-xl text-lg leading-8 text-slate-600"
+              >
                 {text}
-              </p>
+              </motion.p>
 
-              <div className="mt-9 flex flex-wrap gap-3">
+              <motion.div variants={item} className="mt-9 flex flex-wrap gap-3">
                 <Button asChild size="lg">
                   <Link href={primaryHref}>
                     {primaryLabel}
@@ -169,8 +185,8 @@ export function HomeHero({
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
 
           {/* mobile image */}
@@ -184,7 +200,12 @@ export function HomeHero({
       </div>
 
       {/* floating card */}
-      <div className="absolute bottom-10 left-1/2 z-20 hidden w-auto rounded-2xl bg-white p-5 shadow-premium lg:block lg:left-[42%]">
+      <motion.div
+        initial={reduce ? false : { opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.45 }}
+        className="absolute bottom-10 left-1/2 z-20 hidden w-auto rounded-2xl bg-white p-5 shadow-premium lg:block lg:left-[42%]"
+      >
         <div className="flex items-center gap-4">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cream text-gold-600 ring-1 ring-gold-500/30">
             <Icon name="layers" className="h-6 w-6" />
@@ -196,7 +217,7 @@ export function HomeHero({
             <p className="whitespace-nowrap text-sm text-slate-500">{cardSubtitle}</p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }

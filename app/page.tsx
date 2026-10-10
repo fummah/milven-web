@@ -60,9 +60,12 @@ export default async function Home() {
       {/* STATS BAND */}
       <section className="bg-navy-950 text-white">
         <div className="container-page">
-          <div className="grid grid-cols-2 gap-y-8 divide-white/10 py-10 sm:grid-cols-4 sm:divide-x">
+          <RevealStagger className="grid grid-cols-2 gap-y-8 divide-white/10 py-10 sm:grid-cols-4 sm:divide-x">
             {metrics.map((m, i) => (
-              <div key={m.label} className="flex items-center justify-center gap-4 px-4">
+              <StaggerItem
+                key={m.label}
+                className="flex items-center justify-center gap-4 px-4"
+              >
                 <Icon
                   name={["badge-check", "users", "layers", "target"][i % 4]}
                   className="h-8 w-8 shrink-0 text-gold-400"
@@ -73,9 +76,9 @@ export default async function Home() {
                   </div>
                   <div className="text-xs font-medium text-white/70">{m.label}</div>
                 </div>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </RevealStagger>
         </div>
       </section>
 

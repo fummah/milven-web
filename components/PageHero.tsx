@@ -44,7 +44,7 @@ export function PageHero({
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center opacity-90"
+          className="animate-hero-in object-cover object-center opacity-90"
         />
       )}
 
