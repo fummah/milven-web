@@ -8,13 +8,9 @@ import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/Icon"
 import { HeroBackground } from "@/components/HeroBackground"
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } }
-}
 const lineGroup = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.11 } }
+  show: { transition: { staggerChildren: 0.14 } }
 }
 const item = {
   hidden: { opacity: 0, y: 20 },
@@ -88,19 +84,16 @@ export function HomeHero({
       <div className="container-page relative w-full">
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div className="py-12 lg:py-20 lg:pr-8">
-            <motion.div
-              key={index}
-              variants={container}
-              initial={reduce ? false : "hidden"}
-              animate="show"
-            >
-              <motion.p variants={item} className="eyebrow mb-6">
+            <div>
+              <p className="eyebrow mb-6">
                 <span className="h-px w-8 bg-gold-500" />
                 {eyebrow}
-              </motion.p>
+              </p>
 
               <motion.h1
                 variants={lineGroup}
+                initial={reduce ? false : "hidden"}
+                animate="show"
                 className="text-balance font-sans text-4xl font-extrabold leading-[1.05] tracking-tight text-navy-900 sm:text-5xl lg:text-[3.5rem]"
               >
                 {lines.map((line, i) => {
@@ -115,14 +108,11 @@ export function HomeHero({
                 })}
               </motion.h1>
 
-              <motion.p
-                variants={item}
-                className="mt-6 max-w-xl text-lg leading-8 text-slate-600"
-              >
+              <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
                 {text}
-              </motion.p>
+              </p>
 
-              <motion.div variants={item} className="mt-9 flex flex-wrap gap-3">
+              <div className="mt-9 flex flex-wrap gap-3">
                 <Button asChild size="lg">
                   <Link href={primaryHref}>
                     {primaryLabel}
@@ -135,8 +125,8 @@ export function HomeHero({
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
 
           {/* mobile image */}
@@ -150,13 +140,7 @@ export function HomeHero({
       </div>
 
       {/* floating card */}
-      <motion.div
-        key={`card-${index}`}
-        initial={reduce ? false : { opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
-        className="absolute bottom-10 left-1/2 z-20 hidden w-auto rounded-2xl bg-white p-5 shadow-premium lg:block lg:left-[42%]"
-      >
+      <div className="absolute bottom-10 left-1/2 z-20 hidden w-auto rounded-2xl bg-white p-5 shadow-premium lg:block lg:left-[42%]">
         <div className="flex items-center gap-4">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cream text-gold-600 ring-1 ring-gold-500/30">
             <Icon name="layers" className="h-6 w-6" />
@@ -168,7 +152,7 @@ export function HomeHero({
             <p className="whitespace-nowrap text-sm text-slate-500">{cardSubtitle}</p>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   )
 }
