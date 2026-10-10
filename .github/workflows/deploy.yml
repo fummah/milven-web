@@ -2,104 +2,218 @@ name: Deploy to production
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+
   workflow_dispatch:
 
 concurrency:
   group: production-deploy
-  cancel-in-progress: true
+  cancel-in-progress: false
+
 
 jobs:
-  # ---------------------------------------------------------------
-  # Build the Docker image and push it to GitHub Container Registry
-  # ---------------------------------------------------------------
-  build-and-push:
+
+  test:
+    name: Test and Build
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    outputs:
-      image: ${{ steps.vars.outputs.image }}
+
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Compute lowercase image name
-        id: vars
-        run: echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          node-version: "22"
 
-      - name: Extract metadata (tags, labels)
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ steps.vars.outputs.image }}
-          tags: |
-            type=raw,value=latest
-            type=raw,value=sha-${{ github.sha }}
+      - name: Install dependencies
+        run: npm ci --include=optional --no-audit --no-fund
 
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL }}
-            NEXT_PUBLIC_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      - name: Generate Prisma client
+        run: npx prisma generate
 
-  # ---------------------------------------------------------------
-  # Deploy on the server: pull the new image and restart the stack
-  # ---------------------------------------------------------------
+      - name: Build application
+        run: npm run build
+        env:
+          DATABASE_URL: postgresql://postgres:dummy@localhost:5432/dummy?schema=public
+          AUTH_SECRET: github-actions-build-secret
+          NEXT_PUBLIC_SITE_URL: https://example.com
+          ADMIN_EMAIL: advisory@milven.co.zw
+          ADMIN_PASSWORD: temporary-build-password
+          ADMIN_NAME: Milven Administrator
+
+
   deploy:
-    needs: build-and-push
+    name: Deploy Production
+    needs: test
     runs-on: ubuntu-latest
+
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Copy compose file to server
-        uses: appleboy/scp-action@v0.1.7
+
+      - name: Verify deployment files
+        run: |
+          echo "Checking repository..."
+
+          test -f Dockerfile || {
+            echo "ERROR: Dockerfile missing"
+            exit 1
+          }
+
+          test -f docker-compose.prod.yml || {
+            echo "ERROR: docker-compose.prod.yml missing"
+            exit 1
+          }
+
+          test -f package.json || {
+            echo "ERROR: package.json missing"
+            exit 1
+          }
+
+          test -f package-lock.json || {
+            echo "ERROR: package-lock.json missing"
+            exit 1
+          }
+
+          echo "Deployment files verified."
+
+
+      - name: Prepare server directory
+        uses: appleboy/ssh-action@v1.2.0
+
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "docker-compose.prod.yml"
-          target: ${{ secrets.DEPLOY_PATH }}
+
+          script_stop: true
+
+          script: |
+            set -e
+
+            sudo mkdir -p /opt/milven-website
+            sudo chown -R $USER:$USER /opt/milven-website
+
+            echo "Server directory ready."
+
+
+      - name: Upload application
+        uses: appleboy/scp-action@v0.1.7
+
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+
+          source: >
+            Dockerfile,
+            docker-compose.prod.yml,
+            package.json,
+            package-lock.json,
+            next.config.mjs,
+            tsconfig.json,
+            postcss.config.js,
+            tailwind.config.ts,
+            app,
+            components,
+            lib,
+            prisma,
+            public
+
+          target: /opt/milven-website
+
+          overwrite: true
+
 
       - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.2.0
-        env:
-          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          envs: GHCR_TOKEN
+
+          script_stop: true
+          command_timeout: 45m
+
           script: |
             set -e
-            cd "${{ secrets.DEPLOY_PATH }}"
-            if [ -n "$GHCR_TOKEN" ]; then
-              echo "$GHCR_TOKEN" | docker login ghcr.io -u "${{ github.repository_owner }}" --password-stdin
-            else
-              echo "GHCR_TOKEN is not set — assuming the GHCR package is public."
-            fi
-            export IMAGE="${{ needs.build-and-push.outputs.image }}:latest"
-            docker compose -f docker-compose.prod.yml pull
-            docker compose -f docker-compose.prod.yml up -d --remove-orphans
+
+            cd /opt/milven-website
+
+            echo "======================================"
+            echo "MILVEN WEBSITE DEPLOYMENT"
+            echo "======================================"
+
+            echo "Checking required files..."
+
+            test -f Dockerfile || {
+              echo "ERROR: Dockerfile missing"
+              ls -la
+              exit 1
+            }
+
+            test -f docker-compose.prod.yml || {
+              echo "ERROR: docker-compose.prod.yml missing"
+              exit 1
+            }
+
+            test -f package.json || {
+              echo "ERROR: package.json missing"
+              exit 1
+            }
+
+            test -f .env || {
+              echo "ERROR: .env missing"
+              exit 1
+            }
+
+            echo "Files OK."
+
+            echo "Validating Compose..."
+            docker compose -f docker-compose.prod.yml config > /dev/null
+
+            echo "Building application..."
+            docker compose -f docker-compose.prod.yml build web
+
+            echo "Starting database..."
+            docker compose -f docker-compose.prod.yml up -d db
+
+            echo "Waiting for database..."
+            sleep 10
+
+            echo "Running Prisma migrations..."
+            docker compose -f docker-compose.prod.yml run --rm web \
+              npx prisma migrate deploy
+
+            echo "Starting website..."
+            docker compose -f docker-compose.prod.yml up -d web
+
+            echo "Waiting for application..."
+            sleep 15
+
+            echo "Container status:"
+            docker compose -f docker-compose.prod.yml ps
+
+            echo "Health check..."
+            curl --fail \
+              --silent \
+              --show-error \
+              --max-time 30 \
+              http://127.0.0.1:3000/ \
+              > /dev/null
+
+            echo "Cleaning old Docker images..."
             docker image prune -f
-            echo "Deployed $IMAGE"
+
+            echo "======================================"
+            echo "DEPLOYMENT COMPLETE"
+            echo "======================================"

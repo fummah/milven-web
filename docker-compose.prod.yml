@@ -1,26 +1,12 @@
-# Production stack for the Milven website.
-#
-# Usage on the server:
-#
-#   cd /opt/milven-website
-#   docker compose -f docker-compose.prod.yml build
-#   docker compose -f docker-compose.prod.yml up -d
-#
-# Seed:
-#
-#   docker compose -f docker-compose.prod.yml run --rm web \
-#     npx tsx prisma/seed.ts
-
 services:
-
   db:
     image: postgres:16-alpine
     container_name: milven_website_db
     restart: unless-stopped
 
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-milven}
-      POSTGRES_USER: ${POSTGRES_USER:-milven}
+      POSTGRES_DB: ${POSTGRES_DB:-milvenweb}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
 
     volumes:
@@ -30,14 +16,11 @@ services:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U ${POSTGRES_USER:-milven} -d ${POSTGRES_DB:-milven}"
+          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-milvenweb}"
         ]
       interval: 10s
       timeout: 5s
-      retries: 10
-
-    networks:
-      - backend
+      retries: 20
 
 
   web:
@@ -55,7 +38,7 @@ services:
     environment:
       NODE_ENV: production
 
-      DATABASE_URL: postgresql://${POSTGRES_USER:-milven}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-milven}?schema=public
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-milvenweb}?schema=public
 
       AUTH_SECRET: ${AUTH_SECRET:?set AUTH_SECRET in .env}
 
@@ -78,15 +61,7 @@ services:
     volumes:
       - uploads:/app/public/uploads
 
-    networks:
-      - backend
-
 
 volumes:
   db_data:
   uploads:
-
-
-networks:
-  backend:
-    driver: bridge
