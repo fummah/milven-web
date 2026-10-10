@@ -53,6 +53,8 @@ nano .env
 Base it on `.env.production.example`:
 
 ```env
+IMAGE=ghcr.io/fummah/milven-web:latest
+
 POSTGRES_DB=milven
 POSTGRES_USER=milven
 POSTGRES_PASSWORD=<a-long-random-password>
