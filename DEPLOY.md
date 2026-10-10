@@ -116,7 +116,7 @@ In your GitHub repo → **Settings**:
 > *Packages* → `milven-web` → *Package settings* → *Change visibility → Public*.
 > You can then leave `GHCR_TOKEN` unset.
 
-## 4. Push the code
+## 4. Push the code t
 
 If this folder is not yet a git repository:
 
