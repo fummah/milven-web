@@ -1,47 +1,92 @@
 # Production stack for the Milven website.
-# Usage on the server (in the deploy directory, alongside a `.env` file):
-#   docker compose -f docker-compose.prod.yml pull
+#
+# Usage on the server:
+#
+#   cd /opt/milven-website
+#   docker compose -f docker-compose.prod.yml build
 #   docker compose -f docker-compose.prod.yml up -d
+#
+# Seed:
+#
+#   docker compose -f docker-compose.prod.yml run --rm web \
+#     npx tsx prisma/seed.ts
 
 services:
+
   db:
     image: postgres:16-alpine
+    container_name: milven_website_db
     restart: unless-stopped
+
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-milven}
       POSTGRES_USER: ${POSTGRES_USER:-milven}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+
     volumes:
       - db_data:/var/lib/postgresql/data
+
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-milven} -d ${POSTGRES_DB:-milven}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-milven} -d ${POSTGRES_DB:-milven}"
+        ]
       interval: 10s
       timeout: 5s
       retries: 10
 
+    networks:
+      - backend
+
+
   web:
-    image: ${IMAGE:-ghcr.io/your-org/milven-website:latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: milven_website_web
     restart: unless-stopped
+
     depends_on:
       db:
         condition: service_healthy
+
     environment:
+      NODE_ENV: production
+
       DATABASE_URL: postgresql://${POSTGRES_USER:-milven}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-milven}?schema=public
+
       AUTH_SECRET: ${AUTH_SECRET:?set AUTH_SECRET in .env}
-      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
-      NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY}
-      RESEND_API_KEY: ${RESEND_API_KEY}
-      CONTACT_TO_EMAIL: ${CONTACT_TO_EMAIL}
-      CONTACT_FROM_EMAIL: ${CONTACT_FROM_EMAIL}
-      ADMIN_EMAIL: ${ADMIN_EMAIL}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
-      ADMIN_NAME: ${ADMIN_NAME}
+
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-}
+
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY:-}
+      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY:-}
+
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      CONTACT_TO_EMAIL: ${CONTACT_TO_EMAIL:-advisory@milven.co.zw}
+      CONTACT_FROM_EMAIL: ${CONTACT_FROM_EMAIL:-}
+
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?set ADMIN_EMAIL in .env}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?set ADMIN_PASSWORD in .env}
+      ADMIN_NAME: ${ADMIN_NAME:-Milven Administrator}
+
     ports:
       - "${APP_PORT:-3000}:3000"
+
     volumes:
       - uploads:/app/public/uploads
+
+    networks:
+      - backend
+
 
 volumes:
   db_data:
   uploads:
+
+
+networks:
+  backend:
+    driver: bridge
