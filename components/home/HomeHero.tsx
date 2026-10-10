@@ -101,8 +101,25 @@ export function HomeHero({
                   const base = isLast ? line.replace(/\.$/, "") : line
                   return (
                     <motion.span key={`${line}-${i}`} variants={item} className="block">
-                      {base}
-                      {isLast && <span className="text-gold-500">.</span>}
+                      {isLast ? (
+                        <span className="relative inline-block">
+                          {base}
+                          <span className="text-gold-500">.</span>
+                          {reduce ? (
+                            <span className="absolute -bottom-2 left-0 h-1 w-full rounded-full bg-gold-500" />
+                          ) : (
+                            <motion.span
+                              initial={{ scaleX: 0 }}
+                              animate={{ scaleX: 1 }}
+                              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
+                              style={{ originX: 0 }}
+                              className="absolute -bottom-2 left-0 h-1 w-full rounded-full bg-gradient-to-r from-gold-500 to-gold-400"
+                            />
+                          )}
+                        </span>
+                      ) : (
+                        base
+                      )}
                     </motion.span>
                   )
                 })}
