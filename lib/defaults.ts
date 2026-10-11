@@ -59,6 +59,7 @@ export const defaultSettings: GlobalSettings = {
           { label: "About", href: "/about" },
           { label: "Industries", href: "/industries" },
           { label: "Insights", href: "/insights" },
+          { label: "Resources", href: "/resources" },
           { label: "Case Studies", href: "/case-studies" },
           { label: "Company Profile", href: "/company-profile" },
           { label: "Contact", href: "/contact" }

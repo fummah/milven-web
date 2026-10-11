@@ -51,6 +51,24 @@ services:
     volumes:
       - uploads:/app/public/uploads
 
+  backup:
+    image: prodrigestivill/postgres-backup-local:16
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: ${POSTGRES_DB:-milvenweb}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      SCHEDULE: "@daily"
+      BACKUP_KEEP_DAYS: 3
+      TZ: Africa/Harare
+    volumes:
+      - backups:/backups
+
 volumes:
   db_data:
   uploads:
+  backups:

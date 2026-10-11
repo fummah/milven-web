@@ -89,7 +89,7 @@ export function TeamManager({ initial }: { initial: TeamRecord[] }) {
               )}
             >
               {i.image ? (
-                <Image src={i.image} alt="" width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
+                <Image src={i.image} alt={i.name} width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
               ) : (
                 <span className="h-8 w-8 rounded-full bg-navy-200" />
               )}

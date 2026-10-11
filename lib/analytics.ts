@@ -8,6 +8,7 @@
 export type AnalyticsEvent =
   | "talk_to_advisor_click"
   | "cta_click"
+  | "form_start"
   | "contact_form_submit"
   | "training_proposal_submit"
   | "company_profile_download"

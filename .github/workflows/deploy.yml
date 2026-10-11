@@ -231,6 +231,9 @@ jobs:
             echo "Starting website..."
             docker compose -f docker-compose.prod.yml up -d web
 
+            echo "Starting automated database backups..."
+            docker compose -f docker-compose.prod.yml up -d backup
+
             echo "Waiting for application..."
             sleep 15
 

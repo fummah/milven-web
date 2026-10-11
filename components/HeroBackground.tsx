@@ -34,7 +34,7 @@ export function HeroBackground({
         >
           <Image
             src={slides[current]}
-            alt=""
+            alt="Milven Consulting Services — advisory and transformation"
             fill
             priority={current === 0}
             sizes="100vw"

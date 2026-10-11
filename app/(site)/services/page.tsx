@@ -118,6 +118,8 @@ export default async function ServicesPage() {
           text={content.finalCta.text}
           primaryLabel={content.finalCta.primaryLabel}
           primaryHref={content.finalCta.primaryHref}
+          secondaryLabel="Request a Proposal"
+          secondaryHref="/contact?intent=proposal"
         />
       )}
     </main>

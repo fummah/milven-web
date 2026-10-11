@@ -68,7 +68,7 @@ export default async function InsightPage({
           {item.image && (
             <Image
               src={item.image}
-              alt=""
+              alt={item.title}
               fill
               priority
               sizes="100vw"

@@ -35,6 +35,8 @@ import {
   ChartPie,
   BadgeCheck,
   Scale,
+  ClipboardList,
+  BookOpen,
   type LucideIcon
 } from "lucide-react"
 
@@ -74,7 +76,9 @@ const map: Record<string, LucideIcon> = {
   sparkles: Sparkles,
   "chart-pie": ChartPie,
   "badge-check": BadgeCheck,
-  scale: Scale
+  scale: Scale,
+  "clipboard-list": ClipboardList,
+  "book-open": BookOpen
 }
 
 export function Icon({

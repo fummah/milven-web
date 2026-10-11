@@ -22,6 +22,13 @@ export function ChatWidget() {
   const [sent, setSent] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
   const [form, setForm] = React.useState({ name: "", email: "", message: "" })
+  const started = React.useRef(false)
+
+  const start = () => {
+    if (started.current) return
+    started.current = true
+    track("form_start", { form: "chat_widget" })
+  }
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 400)
@@ -108,7 +115,12 @@ export function ChatWidget() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={submit} className="grid gap-3 p-5">
+              <form
+                onSubmit={submit}
+                onFocusCapture={start}
+                onPointerDownCapture={start}
+                className="grid gap-3 p-5"
+              >
                 <input
                   tabIndex={-1}
                   autoComplete="off"

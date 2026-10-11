@@ -81,7 +81,7 @@ export function MediaPicker({
       {value ? (
         <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-navy-100">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={value} alt="" className="h-full w-full object-cover" />
+          <img src={value} alt={label} className="h-full w-full object-cover" />
         </div>
       ) : (
         <div className="flex aspect-[16/9] w-full items-center justify-center rounded-xl border border-dashed border-navy-200 bg-cream text-slate-400">

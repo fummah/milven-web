@@ -16,6 +16,13 @@ import { track } from "@/lib/analytics"
 export function ContactForm() {
   const params = useSearchParams()
   const [submitted, setSubmitted] = React.useState(false)
+  const started = React.useRef(false)
+
+  const start = () => {
+    if (started.current) return
+    started.current = true
+    track("form_start", { form: "contact" })
+  }
 
   const {
     register,
@@ -35,7 +42,9 @@ export function ContactForm() {
         ? `I would like more information about the "${params.get("programme")}" programme.`
         : params.get("industry")
           ? `I would like to discuss support for the ${params.get("industry")} sector.`
-          : "",
+          : params.get("intent") === "proposal"
+            ? "I would like to request a formal proposal."
+            : "",
       preferredMethod: "Email",
       honeypot: ""
     }
@@ -90,7 +99,13 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5" noValidate>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      onFocusCapture={start}
+      onPointerDownCapture={start}
+      className="grid gap-5"
+      noValidate
+    >
       <input
         type="text"
         tabIndex={-1}

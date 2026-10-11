@@ -58,7 +58,7 @@ export default async function CaseStudyPage({
     <main>
       <section className="relative flex min-h-[52vh] items-end overflow-hidden bg-navy-950 text-white">
         {cs.image && (
-          <Image src={cs.image} alt="" fill priority sizes="100vw" className="object-cover opacity-40" />
+          <Image src={cs.image} alt={cs.title} fill priority sizes="100vw" className="object-cover opacity-40" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/80 to-navy-950/40" />
         <div className="container-page relative py-16">

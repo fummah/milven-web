@@ -23,6 +23,13 @@ export function TrainingEnquiryForm({
   programmes?: string[]
 }) {
   const [submitted, setSubmitted] = React.useState(false)
+  const started = React.useRef(false)
+
+  const start = () => {
+    if (started.current) return
+    started.current = true
+    track("form_start", { form: "training" })
+  }
 
   const {
     register,
@@ -90,7 +97,13 @@ export function TrainingEnquiryForm({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5" noValidate>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      onFocusCapture={start}
+      onPointerDownCapture={start}
+      className="grid gap-5"
+      noValidate
+    >
       <input
         type="text"
         tabIndex={-1}

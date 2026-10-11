@@ -65,6 +65,7 @@ export const seedGlobalSettings = {
           { label: "About", href: "/about" },
           { label: "Industries", href: "/industries" },
           { label: "Insights", href: "/insights" },
+          { label: "Resources", href: "/resources" },
           { label: "Case Studies", href: "/case-studies" },
           { label: "Company Profile", href: "/company-profile" },
           { label: "Contact", href: "/contact" }
@@ -167,7 +168,8 @@ export const seedPages: Record<string, any> = {
         { title: "I need better management reporting", text: "Insightful reporting for faster decisions.", href: "/services/business-systems-transformation", icon: "bar-chart-3" },
         { title: "I need an ERP or integrated business system", text: "Systems that connect the whole business.", href: "/services/business-systems-transformation", icon: "network" },
         { title: "I need to redesign business processes", text: "Leaner, faster and more controlled operations.", href: "/services/business-systems-transformation", icon: "workflow" },
-        { title: "I need executive or management finance training", text: "Build financial intelligence across leadership.", href: "/academy", icon: "graduation-cap" }
+        { title: "I need executive or management finance training", text: "Build financial intelligence across leadership.", href: "/academy", icon: "graduation-cap" },
+        { title: "I need a practical transformation partner", text: "Execution support, not just a report.", href: "/services/business-systems-transformation", icon: "handshake" }
       ],
       process: {
         eyebrow: "How We Work",
@@ -301,7 +303,7 @@ export const seedPages: Record<string, any> = {
     content: {
       eyebrow: "About Milven",
       intro:
-        "We are an African advisory firm built around a simple conviction: better decisions create better businesses and better leaders. We combine strategic thinking, financial discipline, technology and capability development to help organisations perform at their best.",
+        "Milven Consulting Services is a professional advisory and business transformation firm focused on helping organisations strengthen strategy, financial performance, operating systems and executive capability. We work with businesses, institutions, entrepreneurs and leadership teams facing growth, transformation, performance and execution challenges.",
       purpose: "To enable businesses and leaders to make better decisions, build stronger organisations and achieve sustainable performance.",
       vision: "To become a trusted African advisory partner for organisations seeking strategic, financial and operational excellence.",
       mission: "To provide high-quality advisory, transformation and executive-development solutions that create measurable business value.",
@@ -316,7 +318,7 @@ export const seedPages: Record<string, any> = {
       ],
       approach: {
         title: "Our Approach",
-        text: "We combine advisory depth with hands-on delivery. Every engagement is designed to produce clear decisions, measurable outcomes and stronger internal capability.",
+        text: "Milven combines rigorous analysis with practical implementation. We seek first to understand the business, diagnose the real constraint, design an appropriate solution, support implementation and strengthen internal capability.",
         points: [
           { title: "Senior-led", text: "Experienced advisors remain close to the work." },
           { title: "Evidence-based", text: "Decisions grounded in data and analysis." },
@@ -364,7 +366,7 @@ export const seedPages: Record<string, any> = {
       eyebrow: "Strategy & Financial Advisory",
       overview: {
         title: "Overview",
-        text: "We help organisations make better decisions through practical, evidence-based strategy and financial advisory services that improve performance and create long-term value. From corporate strategy to financial modelling and board advisory, our work is designed to translate insight into action."
+        text: "Milven works alongside leadership teams to strengthen business strategy, financial planning and enterprise performance. Our work converts financial and commercial information into practical decisions, executable plans and measurable outcomes."
       },
       outcomes: {
         title: "Key Outcomes",
@@ -418,7 +420,7 @@ export const seedPages: Record<string, any> = {
       eyebrow: "Business Systems & Transformation",
       overview: {
         title: "Overview",
-        text: "We help organisations transform how they operate. By redesigning processes and implementing integrated systems, we give leadership the visibility, control and efficiency needed to scale. Our approach connects technology to real business outcomes."
+        text: "Milven helps organisations redesign processes and implement systems that enhance visibility, control, efficiency and scalability. The focus is not software for its own sake, but better business performance enabled by appropriate systems."
       },
       clusters: {
         title: "Our Services Include",
@@ -462,7 +464,7 @@ export const seedPages: Record<string, any> = {
       "Practical, high-impact executive finance programmes for boards, executives, managers and finance teams.",
     heroTitle: "Developing Financially Intelligent Leaders.",
     heroText:
-      "Practical, high-impact programmes that build financial intelligence across boards, executives, managers and finance teams.",
+      "The Milven Executive Finance Academy delivers practical, high-impact programmes designed around the financial and strategic decisions boards, executives, managers and finance teams face every day.",
     heroImage: "/images/academy/academy-hero.jpg",
     content: {
       eyebrow: "Executive Education",

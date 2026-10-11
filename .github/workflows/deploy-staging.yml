@@ -70,4 +70,5 @@ jobs:
             docker compose -f docker-compose.staging.yml up -d db
             docker compose -f docker-compose.staging.yml run --rm web npx prisma migrate deploy
             docker compose -f docker-compose.staging.yml up -d web
+            docker compose -f docker-compose.staging.yml up -d backup
             echo "Staging deployed."

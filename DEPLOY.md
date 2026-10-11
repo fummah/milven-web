@@ -224,6 +224,20 @@ docker compose -f docker-compose.prod.yml exec db \
   pg_dump -U milven milven > backup-$(date +%F).sql
 ```
 
+## Automated backups
+
+The stack runs a `backup` service (`prodrigestivill/postgres-backup-local`) that
+dumps the database **daily** into the `backups` Docker volume, retaining 7 daily,
+4 weekly and 6 monthly backups.
+
+```bash
+# list available backups
+docker compose -f docker-compose.prod.yml exec backup ls -la /backups
+
+# manual dump
+docker compose -f docker-compose.prod.yml exec backup /backup.sh
+```
+
 ## Troubleshooting
 
 - **`Error: Cannot perform an interactive login from a non TTY device`** →

@@ -71,6 +71,14 @@ export default async function IndustriesPage() {
         </div>
       </section>
 
+      <div className="container-page pb-8">
+        <p className="mx-auto max-w-3xl border-t border-navy-100 pt-8 text-center text-xs leading-6 text-slate-400">
+          Milven provides management, financial and business-systems advisory
+          services. We do not provide statutory audit, assurance or regulated
+          investment services.
+        </p>
+      </div>
+
       {c.cta && (
         <CtaBand
           title={c.cta.title}
