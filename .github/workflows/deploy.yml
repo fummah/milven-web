@@ -360,7 +360,7 @@ jobs:
 
             echo "Health check passed."
 
-            echo "Cleaning dangling Docker images..."
+            echo "Cleaning dangling Docker images.."
             docker image prune -f
 
             echo "======================================"
