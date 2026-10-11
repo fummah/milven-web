@@ -23,20 +23,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "22"
 
-
       - name: Install dependencies
         run: npm ci --include=optional --no-audit --no-fund
 
-
       - name: Generate Prisma client
         run: npx prisma generate
-
 
       - name: Verify production Dockerfile
         run: |
@@ -52,19 +48,16 @@ jobs:
 
           grep -q "node:22-bookworm-slim" Dockerfile || {
             echo "ERROR: Dockerfile must use node:22-bookworm-slim"
-            echo "Current Dockerfile:"
             cat Dockerfile
             exit 1
           }
 
           if grep -q "node:.*alpine" Dockerfile; then
             echo "ERROR: Alpine base image detected."
-            echo "Prisma/OpenSSL compatibility requires Bookworm Slim."
             exit 1
           fi
 
           echo "Dockerfile verified."
-
 
       - name: Build application
         run: npm run build
@@ -86,7 +79,6 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
-
 
       - name: Verify deployment files
         run: |
@@ -117,8 +109,6 @@ jobs:
             exit 1
           }
 
-          echo "Checking production Dockerfile base image..."
-
           grep -q "node:22-bookworm-slim" Dockerfile || {
             echo "ERROR: Dockerfile is not using node:22-bookworm-slim"
             cat Dockerfile
@@ -132,18 +122,14 @@ jobs:
 
           echo "Deployment files verified."
 
-
       - name: Prepare server directory
         uses: appleboy/ssh-action@v1.2.0
-
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-
           script_stop: true
-
           script: |
             set -e
 
@@ -152,21 +138,17 @@ jobs:
             echo "Server directory:"
             ls -ld /opt/milven-website
 
-            echo "Checking write access..."
-
             test -w /opt/milven-website || {
               echo "ERROR: SSH user cannot write to /opt/milven-website"
-              echo "Run manually once on the server:"
+              echo "Run manually once:"
               echo "sudo chown -R aaa:aaa /opt/milven-website"
               exit 1
             }
 
             echo "Server directory ready."
 
-
       - name: Upload application
         uses: appleboy/scp-action@v0.1.7
-
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -191,13 +173,10 @@ jobs:
             public
 
           target: /opt/milven-website
-
           overwrite: true
-
 
       - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.2.0
-
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -220,7 +199,6 @@ jobs:
 
             test -f Dockerfile || {
               echo "ERROR: Dockerfile missing"
-              ls -la
               exit 1
             }
 
@@ -251,7 +229,6 @@ jobs:
 
             echo "Files OK."
 
-
             echo "Checking Dockerfile on server..."
 
             grep '^FROM ' Dockerfile || true
@@ -263,44 +240,33 @@ jobs:
             }
 
             if grep -q "node:.*alpine" Dockerfile; then
-              echo "ERROR: Alpine Docker image detected on server."
+              echo "ERROR: Alpine Docker image detected."
               exit 1
             fi
 
             echo "Dockerfile is correct."
 
-
             echo "Validating Docker Compose..."
-
             docker compose -f docker-compose.prod.yml config > /dev/null
 
-
             echo "Stopping old web container if present..."
-
             docker compose -f docker-compose.prod.yml stop web 2>/dev/null || true
             docker compose -f docker-compose.prod.yml rm -f web 2>/dev/null || true
 
-
             echo "Removing old web image if present..."
-
             docker image rm milven-website-web 2>/dev/null || true
 
-
-            echo "Building application with fresh Docker layers..."
-
+            echo "Building application..."
             docker compose \
               -f docker-compose.prod.yml \
               build \
               --no-cache \
               web
 
-
             echo "Starting database..."
-
             docker compose \
               -f docker-compose.prod.yml \
               up -d db
-
 
             echo "Waiting for PostgreSQL..."
 
@@ -328,9 +294,7 @@ jobs:
               fi
 
               sleep 2
-
             done
-
 
             echo "Checking Prisma runtime..."
 
@@ -339,22 +303,12 @@ jobs:
               run --rm web \
               npx prisma -v
 
-
-            echo "Checking Prisma migration status..."
-
-            docker compose \
-              -f docker-compose.prod.yml \
-              run --rm web \
-              npx prisma migrate status
-
-
-            echo "Running Prisma migrations..."
+            echo "Applying Prisma migrations..."
 
             docker compose \
               -f docker-compose.prod.yml \
               run --rm web \
               npx prisma migrate deploy
-
 
             echo "Starting website..."
 
@@ -362,25 +316,20 @@ jobs:
               -f docker-compose.prod.yml \
               up -d web
 
-
             echo "Starting automated database backups..."
 
             docker compose \
               -f docker-compose.prod.yml \
               up -d backup
 
-
             echo "Waiting for application..."
-
             sleep 15
 
-
-            echo "Container status:"
+            echo "Container status..."
 
             docker compose \
               -f docker-compose.prod.yml \
               ps
-
 
             echo "Checking web container..."
 
@@ -397,9 +346,7 @@ jobs:
                 logs --tail=100 web
 
               exit 1
-
             fi
-
 
             echo "Health check..."
 
@@ -411,14 +358,10 @@ jobs:
               http://127.0.0.1:3000/ \
               > /dev/null
 
-
             echo "Health check passed."
 
-
             echo "Cleaning dangling Docker images..."
-
             docker image prune -f
-
 
             echo "======================================"
             echo "DEPLOYMENT COMPLETE"
