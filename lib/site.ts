@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import type { GlobalSettings } from "@/lib/content-types"
 import { defaultSettings } from "@/lib/defaults"
-import { seedPages, seedInsights } from "@/lib/seed-content"
+import { seedPages, seedInsights } from "@/prisma/seed-content"
 
 export async function getSettings(): Promise<GlobalSettings> {
   try {

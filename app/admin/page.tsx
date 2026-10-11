@@ -8,11 +8,12 @@ import {
 } from "lucide-react"
 import { prisma } from "@/lib/prisma"
 import { formatDate } from "@/lib/utils"
+import { ChecklistCard } from "@/components/admin/ChecklistCard"
 
 export const dynamic = "force-dynamic"
 
 export default async function AdminDashboard() {
-  const [pages, insights, contacts, media, newContacts, recentContacts] =
+  const [pages, insights, contacts, media, newContacts, recentContacts, checklist] =
     await Promise.all([
       prisma.page.count(),
       prisma.insight.count(),
@@ -22,7 +23,8 @@ export default async function AdminDashboard() {
       prisma.contactSubmission.findMany({
         orderBy: { createdAt: "desc" },
         take: 6
-      })
+      }),
+      prisma.checklistItem.findMany({ orderBy: { order: "asc" } })
     ])
 
   const stats = [
@@ -130,6 +132,8 @@ export default async function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      <ChecklistCard initial={checklist as any} />
     </div>
   )
 }

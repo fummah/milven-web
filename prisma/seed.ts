@@ -4,7 +4,7 @@ import {
   seedGlobalSettings,
   seedPages,
   seedInsights
-} from "../lib/seed-content"
+} from "./seed-content"
 
 const prisma = new PrismaClient()
 
@@ -36,8 +36,29 @@ async function seedAdmin() {
   }
 }
 
+async function seedChecklist() {
+  const items = [
+    { key: "domain", label: "Final website domain", detail: "Confirm the production domain and set NEXT_PUBLIC_SITE_URL.", order: 1 },
+    { key: "telephone", label: "Telephone number", detail: "Provide the confirmed phone number to display.", order: 2 },
+    { key: "bios", label: "Team / leadership biographies", detail: "Approved names, roles, photos and biographies.", order: 3 },
+    { key: "photography", label: "Approved professional photography", detail: "Replace licensed stock imagery with approved photography.", order: 4 },
+    { key: "socials", label: "Social media profile URLs", detail: "Confirm official LinkedIn / X / Facebook URLs.", order: 5 },
+    { key: "proof", label: "Approved logos, testimonials & case studies", detail: "Written permission required before publishing.", order: 6 },
+    { key: "legal", label: "Final Privacy & Terms wording", detail: "Approved legal copy for /privacy and /terms.", order: 7 },
+    { key: "crm", label: "CRM / marketing automation platform", detail: "Set CRM_WEBHOOK_URL once the platform is chosen.", order: 8 }
+  ]
+  for (const it of items) {
+    await prisma.checklistItem.upsert({
+      where: { key: it.key },
+      update: { label: it.label, detail: it.detail, order: it.order },
+      create: it
+    })
+  }
+}
+
 async function main() {
   await seedAdmin()
+  await seedChecklist()
 
   await prisma.siteSetting.upsert({
     where: { id: "global" },

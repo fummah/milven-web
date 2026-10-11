@@ -49,6 +49,7 @@ jobs:
             components,
             lib,
             prisma,
+            scripts,
             public
           target: ${{ secrets.DEPLOY_PATH_STAGING }}
           overwrite: true
