@@ -6,6 +6,7 @@ import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
 import { Search } from "lucide-react"
 import { cn, formatDate } from "@/lib/utils"
+import { track } from "@/lib/analytics"
 
 export interface InsightLite {
   id: string
@@ -89,6 +90,7 @@ export function InsightsGrid({
               >
                 <Link
                   href={`/insights/${i.slug}`}
+                  onClick={() => track("insight_read", { slug: i.slug, placement: "insights_grid" })}
                   className="group flex h-full flex-col overflow-hidden rounded-2xl border border-navy-100/70 bg-white shadow-card transition-all duration-500 ease-premium hover:-translate-y-1.5 hover:shadow-card-hover"
                 >
                   {i.image && (

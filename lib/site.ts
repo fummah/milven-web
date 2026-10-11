@@ -133,3 +133,33 @@ export async function getPageMetadata(
     page
   }
 }
+
+export async function getCaseStudies() {
+  try {
+    return await prisma.caseStudy.findMany({
+      where: { published: true },
+      orderBy: [{ featured: "desc" }, { order: "asc" }, { createdAt: "desc" }]
+    })
+  } catch {
+    return []
+  }
+}
+
+export async function getCaseStudy(slug: string) {
+  try {
+    return await prisma.caseStudy.findUnique({ where: { slug } })
+  } catch {
+    return null
+  }
+}
+
+export async function getTeamMembers() {
+  try {
+    return await prisma.teamMember.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" }
+    })
+  } catch {
+    return []
+  }
+}

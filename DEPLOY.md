@@ -70,6 +70,9 @@ RESEND_API_KEY=<resend-key-or-blank>
 CONTACT_TO_EMAIL=advisory@milven.co.zw
 CONTACT_FROM_EMAIL=Milven Website <website@your-domain.com>
 
+NEXT_PUBLIC_GA_ID=<google-analytics-id-or-blank>
+CRM_WEBHOOK_URL=<crm-webhook-or-blank>
+
 APP_PORT=3000
 ```
 

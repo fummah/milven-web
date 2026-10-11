@@ -57,6 +57,7 @@ export interface GlobalSettings {
     name: string
     shortName: string
     tagline: string
+    descriptor?: string
     description: string
     logo: string
     logoWhite: string

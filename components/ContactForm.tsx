@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { contactSchema, type ContactInput, SERVICE_TYPES, CONTACT_METHODS } from "@/lib/validations"
+import { track } from "@/lib/analytics"
 
 export function ContactForm() {
   const params = useSearchParams()
@@ -52,6 +53,7 @@ export function ContactForm() {
 
       setSubmitted(true)
       reset()
+      track("contact_form_submit", { service: values.service || "General" })
       toast.success("Thank you. Your enquiry has been received.", {
         description: "A member of the Milven team will be in touch shortly."
       })

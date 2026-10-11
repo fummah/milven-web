@@ -89,3 +89,66 @@ model AdminUser {
   updatedAt    DateTime @updatedAt
   lastLoginAt  DateTime?
 }
+
+model TrainingEnquiry {
+  id             String   @id @default(cuid())
+  programme      String?
+  organisation   String?
+  contactName    String
+  email          String
+  telephone      String?
+  delegateCount  String?
+  seniority      String?
+  preferredDates String?
+  location       String?
+  deliveryMode   String?
+  objectives     String?
+  status         String   @default("NEW")
+  emailed        Boolean  @default(false)
+  emailError     String?
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model CaseStudy {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  client    String?
+  sector    String?
+  summary   String?
+  challenge String?
+  approach  String?
+  solution  String?
+  outcome   String?
+  image     String?
+  published Boolean  @default(false)
+  featured  Boolean  @default(false)
+  order     Int      @default(0)
+  seoTitle  String?
+  seoDesc   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  bio       String?
+  image     String?
+  linkedin  String?
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Redirect {
+  id        String   @id @default(cuid())
+  from      String   @unique
+  to        String
+  permanent Boolean  @default(true)
+  createdAt DateTime @default(now())
+}

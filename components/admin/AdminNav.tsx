@@ -13,6 +13,10 @@ import {
   Images,
   Mail,
   Settings,
+  FolderKanban,
+  Users,
+  ClipboardList,
+  Share2,
   ExternalLink
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -22,10 +26,14 @@ const items = [
   { label: "Pages", href: "/admin/pages", icon: FileText },
   { label: "Services", href: "/admin/services", icon: Compass },
   { label: "Academy", href: "/admin/academy", icon: GraduationCap },
+  { label: "Academy Enquiries", href: "/admin/training", icon: ClipboardList },
   { label: "Industries", href: "/admin/industries", icon: Building2 },
   { label: "Insights", href: "/admin/insights", icon: Newspaper },
+  { label: "Case Studies", href: "/admin/case-studies", icon: FolderKanban },
+  { label: "Team", href: "/admin/team", icon: Users },
   { label: "Media", href: "/admin/media", icon: Images },
   { label: "Contacts", href: "/admin/contacts", icon: Mail },
+  { label: "Redirects", href: "/admin/redirects", icon: Share2 },
   { label: "Site Settings", href: "/admin/settings", icon: Settings }
 ]
 

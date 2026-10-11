@@ -3,6 +3,7 @@ import { PageHero } from "@/components/PageHero"
 import { ServiceCard } from "@/components/ServiceCard"
 import { CtaBand } from "@/components/CtaBand"
 import { SectionHeading } from "@/components/SectionHeading"
+import { FaqSection } from "@/components/FaqSection"
 import { Icon } from "@/components/Icon"
 import { RevealStagger, StaggerItem, Reveal } from "@/components/motion/Reveal"
 import { getPage, getPageMetadata } from "@/lib/site"
@@ -78,6 +79,38 @@ export default async function ServicesPage() {
           </div>
         </div>
       </section>
+
+      {content.engage && (
+        <section className="section">
+          <div className="container-page">
+            <SectionHeading
+              align="center"
+              eyebrow={content.engage.eyebrow || "How We Engage"}
+              title={content.engage.title}
+              text={content.engage.text}
+            />
+            <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {(content.engage.items || []).map((m: any, i: number) => (
+                <Reveal key={m.title} delay={i * 0.06}>
+                  <div className="h-full rounded-2xl border border-navy-100/70 bg-white p-7 shadow-sm transition-all duration-500 ease-premium hover:-translate-y-1 hover:border-gold-500/40 hover:shadow-card-hover">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-navy-900 text-gold-400">
+                      <Icon name={m.icon} className="h-5 w-5" />
+                    </span>
+                    <h3 className="mt-5 font-serif text-xl text-navy-900">{m.title}</h3>
+                    <p className="mt-2 text-sm leading-7 text-slate-500">{m.text}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <FaqSection
+        items={content.faq}
+        eyebrow="FAQ"
+        title="Questions we are often asked"
+      />
 
       {content.finalCta && (
         <CtaBand

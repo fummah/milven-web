@@ -5,6 +5,7 @@ export const defaultSettings: GlobalSettings = {
     name: "Milven Consulting Services",
     shortName: "Milven",
     tagline: "Better Decisions. Better Businesses. Better Leaders.",
+    descriptor: "Strategy. Transformation. Executive Capability.",
     description:
       "An African advisory firm combining strategy, finance, business transformation and executive development.",
     logo: "/images/brand/milven-logo.png",
@@ -13,7 +14,7 @@ export const defaultSettings: GlobalSettings = {
   contact: {
     email: "advisory@milven.co.zw",
     addressLines: ["2nd Floor, Block A", "Smatsatsa Office Park", "Borrowdale"],
-    responseNote: "We typically respond to enquiries within one business day.",
+    responseNote: "",
     mapQuery: "Smatsatsa Office Park, Borrowdale, Harare"
   },
   nav: [
@@ -58,15 +59,13 @@ export const defaultSettings: GlobalSettings = {
           { label: "About", href: "/about" },
           { label: "Industries", href: "/industries" },
           { label: "Insights", href: "/insights" },
+          { label: "Case Studies", href: "/case-studies" },
+          { label: "Company Profile", href: "/company-profile" },
           { label: "Contact", href: "/contact" }
         ]
       }
     ],
-    socials: [
-      { label: "LinkedIn", href: "https://www.linkedin.com", icon: "linkedin" },
-      { label: "X", href: "https://x.com", icon: "twitter" },
-      { label: "Facebook", href: "https://www.facebook.com", icon: "facebook" }
-    ],
+    socials: [],
     legal: [
       { label: "Privacy", href: "/privacy" },
       { label: "Terms", href: "/terms" },

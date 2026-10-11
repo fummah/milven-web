@@ -87,9 +87,11 @@ export default async function ContactPage() {
                     </span>
                   </li>
                 </ul>
-                <p className="mt-6 border-t border-white/10 pt-6 text-xs text-white/50">
-                  {contact.responseNote}
-                </p>
+                {contact.responseNote ? (
+                  <p className="mt-6 border-t border-white/10 pt-6 text-xs text-white/50">
+                    {contact.responseNote}
+                  </p>
+                ) : null}
               </div>
 
               <div className="relative overflow-hidden rounded-2xl border border-navy-100/70 bg-cream">

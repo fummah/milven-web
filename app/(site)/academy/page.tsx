@@ -6,6 +6,7 @@ import { CtaBand } from "@/components/CtaBand"
 import { SectionHeading } from "@/components/SectionHeading"
 import { Icon } from "@/components/Icon"
 import { ProgrammeExplorer } from "@/components/ProgrammeExplorer"
+import { TrainingEnquiryForm } from "@/components/TrainingEnquiryForm"
 import { Reveal, RevealStagger, StaggerItem } from "@/components/motion/Reveal"
 import { getPage, getPageMetadata } from "@/lib/site"
 import type { Programme } from "@/lib/content-types"
@@ -192,8 +193,42 @@ export default async function AcademyPage() {
         title={c.cta?.title || "Invest in Your Leadership."}
         text={c.enquiry?.text || c.cta?.text}
         primaryLabel={c.cta?.primaryLabel || "Request a Corporate Training Proposal"}
-        primaryHref={c.cta?.primaryHref || "/contact?service=Executive+Finance+Academy"}
+        primaryHref="#enquiry"
       />
+
+      {/* TRAINING ENQUIRY FORM */}
+      <section id="enquiry" className="section scroll-mt-24 bg-cream">
+        <div className="container-page grid gap-12 lg:grid-cols-[1fr_1.25fr]">
+          <div>
+            <SectionHeading
+              eyebrow="Corporate Training"
+              title={c.enquiry?.title || "Request a Corporate Training Proposal"}
+              text={
+                c.enquiry?.text ||
+                "Tell us about your team and objectives and we will design a programme around your needs."
+              }
+            />
+            <ul className="mt-8 space-y-3 text-sm text-slate-600">
+              {[
+                "Customised to your organisation",
+                "Delivered in-house, online or blended",
+                "Board, executive and management audiences",
+                "Led by experienced practitioners"
+              ].map((t) => (
+                <li key={t} className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-600">
+                    <Icon name="badge-check" className="h-3.5 w-3.5" />
+                  </span>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-2xl border border-navy-100/70 bg-white p-6 shadow-card md:p-8">
+            <TrainingEnquiryForm programmes={programmes.map((p) => p.title)} />
+          </div>
+        </div>
+      </section>
     </main>
   )
 }

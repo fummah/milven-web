@@ -6,6 +6,7 @@ import { Header } from "@/components/Header"
 import { Footer } from "@/components/Footer"
 import { TopBanner } from "@/components/TopBanner"
 import { ChatWidget } from "@/components/ChatWidget"
+import { CookieConsent } from "@/components/CookieConsent"
 import { SmoothScroll } from "@/components/SmoothScroll"
 import { getSettings } from "@/lib/site"
 import { siteUrl, defaultSettings } from "@/lib/defaults"
@@ -94,6 +95,7 @@ export default async function RootLayout({
         {children}
         <Footer settings={settings} />
         <ChatWidget />
+        <CookieConsent />
         <Toaster
           position="top-right"
           toastOptions={{

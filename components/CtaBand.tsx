@@ -1,7 +1,10 @@
+"use client"
+
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Reveal } from "@/components/motion/Reveal"
+import { track } from "@/lib/analytics"
 
 export function CtaBand({
   title,
@@ -35,7 +38,10 @@ export function CtaBand({
               </div>
               <div className="flex flex-wrap gap-3">
                 <Button asChild variant="primary" size="lg">
-                  <Link href={primaryHref}>
+                  <Link
+                    href={primaryHref}
+                    onClick={() => track("cta_click", { placement: "cta_band", href: primaryHref })}
+                  >
                     {primaryLabel}
                     <ArrowRight className="h-4 w-4" />
                   </Link>

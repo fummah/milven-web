@@ -8,6 +8,7 @@ import { CtaBand } from "@/components/CtaBand"
 import { SectionHeading } from "@/components/SectionHeading"
 import { Reveal, RevealStagger, StaggerItem } from "@/components/motion/Reveal"
 import { HomeHero } from "@/components/home/HomeHero"
+import { TrackedLink } from "@/components/TrackedLink"
 import { CountUp } from "@/components/CountUp"
 import { getPage, getInsights, getSettings } from "@/lib/site"
 import { defaultSettings } from "@/lib/defaults"
@@ -100,12 +101,27 @@ export default async function Home() {
                   href={p.href}
                   image={p.image}
                   icon={p.icon}
+                  cta={p.cta}
                 />
               </StaggerItem>
             ))}
           </RevealStagger>
         </div>
       </section>
+
+      {/* SIGNATURE */}
+      {content.signature && (
+        <section className="border-y border-navy-100 bg-cream">
+          <div className="container-page py-14 md:py-16">
+            <Reveal>
+              <p className="eyebrow justify-center">The Milven Promise</p>
+              <p className="mx-auto mt-5 max-w-4xl text-center font-serif text-2xl leading-snug text-navy-900 md:text-[2rem]">
+                {content.signature}
+              </p>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* WHY MILVEN */}
       <section className="section bg-cream">
@@ -166,7 +182,9 @@ export default async function Home() {
           <RevealStagger className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {challenges.map((c: any) => (
               <StaggerItem key={c.title}>
-                <Link
+                <TrackedLink
+                  event="challenge_navigator_select"
+                  params={{ challenge: c.title }}
                   href={c.href}
                   className="group flex h-full items-start gap-4 rounded-2xl border border-navy-100/70 bg-white p-6 shadow-sm transition-all duration-400 ease-premium hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-card-hover"
                 >
@@ -178,7 +196,7 @@ export default async function Home() {
                     <span className="mt-1 block text-sm text-slate-500">{c.text}</span>
                   </span>
                   <ArrowUpRight className="h-5 w-5 shrink-0 text-navy-200 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-gold-600" />
-                </Link>
+                </TrackedLink>
               </StaggerItem>
             ))}
           </RevealStagger>
@@ -329,7 +347,8 @@ export default async function Home() {
             <div className="mt-14 grid gap-6 md:grid-cols-3">
               {insights.slice(0, 3).map((i: any, idx: number) => (
                 <Reveal key={i.id} delay={idx * 0.08}>
-                  <Link
+                  <TrackedLink
+                    event="insight_read"
                     href={`/insights/${i.slug}`}
                     className="group flex h-full flex-col overflow-hidden rounded-2xl border border-navy-100/70 bg-white shadow-card transition-all duration-500 ease-premium hover:-translate-y-1.5 hover:shadow-card-hover"
                   >
@@ -360,7 +379,7 @@ export default async function Home() {
                         {i.readMinutes || 5} min read
                       </span>
                     </div>
-                  </Link>
+                  </TrackedLink>
                 </Reveal>
               ))}
             </div>

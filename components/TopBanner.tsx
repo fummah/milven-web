@@ -37,7 +37,7 @@ export function TopBanner({ settings }: { settings: GlobalSettings }) {
   )
 
   return (
-    <div className="marquee-wrap relative overflow-hidden border-b border-white/10 bg-navy-950 text-white">
+    <div className="marquee-wrap relative overflow-hidden border-b border-white/10 bg-navy-950 text-white print:hidden">
       <div className="marquee-track flex w-max animate-marquee items-center py-2">
         <Row />
         <Row hidden />

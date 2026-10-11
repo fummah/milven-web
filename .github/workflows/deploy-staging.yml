@@ -1,0 +1,73 @@
+name: Deploy to staging
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+concurrency:
+  group: staging-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare staging directory
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script_stop: true
+          script: |
+            set -e
+            mkdir -p "${{ secrets.DEPLOY_PATH_STAGING }}"
+            ls -ld "${{ secrets.DEPLOY_PATH_STAGING }}"
+
+      - name: Upload application (staging)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: >
+            Dockerfile,
+            docker-compose.staging.yml,
+            package.json,
+            package-lock.json,
+            next.config.mjs,
+            tsconfig.json,
+            postcss.config.js,
+            tailwind.config.ts,
+            app,
+            components,
+            lib,
+            prisma,
+            public
+          target: ${{ secrets.DEPLOY_PATH_STAGING }}
+          overwrite: true
+
+      - name: Build and start staging
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script_stop: true
+          command_timeout: 45m
+          script: |
+            set -e
+            cd "${{ secrets.DEPLOY_PATH_STAGING }}"
+            test -f .env || { echo "ERROR: staging .env missing"; exit 1; }
+            docker compose -f docker-compose.staging.yml build web
+            docker compose -f docker-compose.staging.yml up -d db
+            docker compose -f docker-compose.staging.yml run --rm web npx prisma migrate deploy
+            docker compose -f docker-compose.staging.yml up -d web
+            echo "Staging deployed."

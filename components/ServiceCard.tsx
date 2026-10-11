@@ -10,6 +10,7 @@ export function ServiceCard({
   href,
   image,
   icon,
+  cta = "Learn more",
   className
 }: {
   title: string
@@ -17,6 +18,7 @@ export function ServiceCard({
   href: string
   image?: string
   icon?: string
+  cta?: string
   className?: string
 }) {
   return (
@@ -52,7 +54,7 @@ export function ServiceCard({
         <h3 className="font-sans text-xl font-bold leading-snug text-navy-900">{title}</h3>
         <p className="mt-3 flex-1 text-[0.95rem] leading-7 text-slate-500">{text}</p>
         <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-gold-600">
-          Learn more
+          {cta}
           <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </span>
       </div>

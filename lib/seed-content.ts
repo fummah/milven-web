@@ -11,6 +11,7 @@ export const seedGlobalSettings = {
     name: "Milven Consulting Services",
     shortName: "Milven",
     tagline: "Better Decisions. Better Businesses. Better Leaders.",
+    descriptor: "Strategy. Transformation. Executive Capability.",
     description:
       "An African advisory firm combining strategy, finance, business transformation and executive development to help organisations perform at their best.",
     logo: "/images/brand/milven-logo.png",
@@ -19,7 +20,7 @@ export const seedGlobalSettings = {
   contact: {
     email: "advisory@milven.co.zw",
     addressLines: ["2nd Floor, Block A", "Smatsatsa Office Park", "Borrowdale"],
-    responseNote: "We typically respond to enquiries within one business day.",
+    responseNote: "",
     mapQuery: "Smatsatsa Office Park, Borrowdale, Harare"
   },
   nav: [
@@ -64,15 +65,13 @@ export const seedGlobalSettings = {
           { label: "About", href: "/about" },
           { label: "Industries", href: "/industries" },
           { label: "Insights", href: "/insights" },
+          { label: "Case Studies", href: "/case-studies" },
+          { label: "Company Profile", href: "/company-profile" },
           { label: "Contact", href: "/contact" }
         ]
       }
     ],
-    socials: [
-      { label: "LinkedIn", href: "https://www.linkedin.com", icon: "linkedin" },
-      { label: "X", href: "https://x.com", icon: "twitter" },
-      { label: "Facebook", href: "https://www.facebook.com", icon: "facebook" }
-    ],
+    socials: [],
     legal: [
       { label: "Privacy", href: "/privacy" },
       { label: "Terms", href: "/terms" },
@@ -104,6 +103,8 @@ export const seedPages: Record<string, any> = {
     heroImage: "/images/home/hero-executive.jpg",
     content: {
       eyebrow: "African Advisory & Transformation",
+      signature:
+        "We help organisations make better decisions, build better systems and develop better leaders.",
       heroImages: [
         "/images/home/hero-executive.jpg",
         "/images/home/hero.jpg",
@@ -121,21 +122,24 @@ export const seedPages: Record<string, any> = {
           text: "Sharper decisions. Stronger performance. Sustainable growth.",
           href: "/services/strategy-financial-advisory",
           image: "/images/home/advisory.jpg",
-          icon: "compass"
+          icon: "compass",
+          cta: "Explore Advisory"
         },
         {
           title: "Business Systems & Transformation",
           text: "Smarter systems. Better processes. Scalable businesses.",
           href: "/services/business-systems-transformation",
           image: "/images/home/systems.jpg",
-          icon: "workflow"
+          icon: "workflow",
+          cta: "Explore Transformation"
         },
         {
           title: "Milven Executive Finance Academy",
           text: "Developing financially intelligent leaders and organisations.",
           href: "/academy",
           image: "/images/home/academy.jpg",
-          icon: "graduation-cap"
+          icon: "graduation-cap",
+          cta: "Explore the Academy"
         }
       ],
       trustLine: "Trusted by African organisations across multiple sectors.",
@@ -205,9 +209,9 @@ export const seedPages: Record<string, any> = {
         cta: "Explore the Academy"
       },
       finalCta: {
-        title: "Let's Build a Stronger, More Resilient Organisation.",
-        text: "Book a consultation or send us an enquiry to discuss your priorities.",
-        primaryLabel: "Get In Touch",
+        title: "Have a strategic, financial or transformation challenge?",
+        text: "Start a conversation with Milven.",
+        primaryLabel: "Talk to an Advisor",
         primaryHref: "/contact"
       }
     }
@@ -258,6 +262,24 @@ export const seedPages: Record<string, any> = {
           { title: "Cross-Functional Expertise", text: "Finance, strategy, systems and people.", icon: "layers" }
         ]
       },
+      engage: {
+        eyebrow: "How We Engage",
+        title: "Engagement models built around your objectives.",
+        text: "We shape the engagement to the decision, the timeline and the level of support your leadership team needs.",
+        items: [
+          { title: "Advisory Project", text: "Defined assignments such as strategy, feasibility studies, financial modelling or process redesign.", icon: "file-text" },
+          { title: "Executive Advisory Retainer", text: "Ongoing strategic and financial decision support for leadership teams.", icon: "users" },
+          { title: "Transformation Programme", text: "Multi-phase systems, finance-function or business transformation.", icon: "workflow" },
+          { title: "Corporate Academy Programme", text: "Customised capability-building programmes for boards and organisations.", icon: "graduation-cap" },
+          { title: "Diagnostic Review", text: "A short initial engagement to identify issues, priorities and a practical roadmap.", icon: "target" }
+        ]
+      },
+      faq: [
+        { q: "How does Milven work with leadership teams?", a: "We work directly with boards, executives and owners, combining rigorous analysis with practical implementation support so recommendations move into execution." },
+        { q: "Do you provide software, or advice, or both?", a: "Both. We advise on strategy and finance, and we implement and optimise the business systems that support them — including Odoo, reporting and process transformation." },
+        { q: "Can engagements be customised?", a: "Yes. Engagements range from a focused diagnostic review to a multi-phase transformation programme, and Academy programmes are tailored to your organisation." },
+        { q: "Which sectors do you serve?", a: "We work across financial services, property, manufacturing, agriculture, trade and distribution, professional services, the public sector, development organisations, SMEs and family businesses, and technology." }
+      ],
       finalCta: {
         title: "From Insight to Execution.",
         text: "We don't just advise. We work with you to implement and achieve results.",
@@ -305,10 +327,13 @@ export const seedPages: Record<string, any> = {
       differentiators: {
         title: "What Sets Us Apart",
         items: [
-          { title: "Integrated Capability", text: "Strategy, finance, systems and capability in one partner.", icon: "layers" },
-          { title: "African Context", text: "Deep understanding of doing business in African markets.", icon: "globe" },
-          { title: "Implementation Focus", text: "We bridge the gap between strategy and execution.", icon: "workflow" },
-          { title: "Capability Transfer", text: "We build the skills that sustain performance.", icon: "graduation-cap" }
+          { title: "Strategic Perspective", text: "We connect financial insight to commercial and strategic objectives.", icon: "compass" },
+          { title: "Integrated Capability", text: "Strategy, finance, systems and people are considered together.", icon: "layers" },
+          { title: "Implementation Orientation", text: "Recommendations are designed to move into execution, not remain in reports.", icon: "rocket" },
+          { title: "Executive Engagement", text: "We work directly with boards, executives, owners and leadership teams.", icon: "users" },
+          { title: "Decision Quality", text: "We improve the quality, speed and confidence of management decisions.", icon: "target" },
+          { title: "Capability Transfer", text: "We strengthen internal teams so value remains after the engagement ends.", icon: "graduation-cap" },
+          { title: "Technology + Finance", text: "Business systems and digital finance are integrated with strategy and operations.", icon: "cpu" }
         ]
       },
       story: {
@@ -354,12 +379,12 @@ export const seedPages: Record<string, any> = {
       clusters: {
         title: "Our Services Include",
         items: [
-          { title: "Corporate & Financial Strategy", text: "Set direction, priorities and financial ambition.", icon: "compass" },
-          { title: "Financial Modelling & Decision Support", text: "Robust models that de-risk major decisions.", icon: "calculator" },
-          { title: "Business Planning & Feasibility", text: "Bankable plans and investment cases.", icon: "file-text" },
-          { title: "Performance Improvement", text: "Improve margins, cash flow and profitability.", icon: "trending-up" },
-          { title: "Business Restructuring", text: "Reshape the business for resilience and growth.", icon: "refresh-cw" },
-          { title: "Board & Executive Advisory", text: "Independent advice for boards and leadership.", icon: "users" }
+          { title: "Corporate & Financial Strategy", text: "Corporate strategy, strategic planning, financial strategy, growth strategy and execution frameworks.", icon: "compass" },
+          { title: "Financial Modelling & Decision Support", text: "Models, scenarios, sensitivity analysis, budgets, forecasts and project appraisal.", icon: "calculator" },
+          { title: "Business Planning & Feasibility", text: "Business plans, feasibility studies, expansion plans, commercial assessments and projections.", icon: "file-text" },
+          { title: "Performance Improvement", text: "Profitability, costs, working capital, cash flow, dashboards and KPIs.", icon: "trending-up" },
+          { title: "Business Restructuring", text: "Turnaround planning, business-model reviews and organisational performance reviews.", icon: "refresh-cw" },
+          { title: "Board & Executive Advisory", text: "Strategy workshops, decision support, performance reviews and executive dashboards.", icon: "users" }
         ]
       },
       approach: {
@@ -372,9 +397,9 @@ export const seedPages: Record<string, any> = {
         ]
       },
       cta: {
-        title: "Let's Discuss Your Strategy and Financial Needs.",
+        title: "Discuss Your Business Challenge.",
         text: "Book a consultation with our advisory team.",
-        primaryLabel: "Book a Consultation",
+        primaryLabel: "Discuss Your Business Challenge",
         primaryHref: "/contact"
       }
     }
@@ -398,11 +423,11 @@ export const seedPages: Record<string, any> = {
       clusters: {
         title: "Our Services Include",
         items: [
-          { title: "Business Systems Advisory", text: "Select and align the right systems to your strategy.", icon: "layers" },
-          { title: "Odoo Solutions", text: "Implementation and optimisation of integrated business platforms.", icon: "boxes" },
-          { title: "Process Transformation", text: "Redesign processes for speed, control and quality.", icon: "workflow" },
-          { title: "Digital Finance", text: "Modernise financial reporting, controls and analysis.", icon: "cpu" },
-          { title: "Implementation Support", text: "Hands-on delivery, training and change management.", icon: "wrench" }
+          { title: "Business Systems Advisory", text: "Requirements assessment, ERP selection, finance systems, CRM, inventory, procurement and sales systems.", icon: "layers" },
+          { title: "Odoo Solutions", text: "Finance, CRM, sales, inventory, procurement, property/project workflows and dashboards.", icon: "boxes" },
+          { title: "Process Transformation", text: "Process mapping, workflow redesign, SOPs, controls and approval matrices.", icon: "workflow" },
+          { title: "Digital Finance", text: "Reporting automation, dashboards, budgeting systems, data integration and AI-enabled processes.", icon: "cpu" },
+          { title: "Implementation Support", text: "Project management, migration, testing, training and post-implementation optimisation.", icon: "wrench" }
         ]
       },
       process: {
@@ -422,9 +447,9 @@ export const seedPages: Record<string, any> = {
         image: "/images/services/dashboard.jpg"
       },
       cta: {
-        title: "Transform How Your Business Runs.",
+        title: "Transform Your Business.",
         text: "Speak to our systems and transformation team.",
-        primaryLabel: "Get In Touch",
+        primaryLabel: "Discuss a Systems Project",
         primaryHref: "/contact"
       }
     }
@@ -435,7 +460,7 @@ export const seedPages: Record<string, any> = {
     seoTitle: "Executive Finance Academy | Milven",
     seoDesc:
       "Practical, high-impact executive finance programmes for boards, executives, managers and finance teams.",
-    heroTitle: "Milven Executive Finance Academy",
+    heroTitle: "Developing Financially Intelligent Leaders.",
     heroText:
       "Practical, high-impact programmes that build financial intelligence across boards, executives, managers and finance teams.",
     heroImage: "/images/academy/academy-hero.jpg",
@@ -446,10 +471,13 @@ export const seedPages: Record<string, any> = {
       formats: {
         title: "Delivery Formats",
         items: [
-          { title: "Open Programmes", text: "Join a cohort of peers from across industries.", icon: "users" },
-          { title: "In-House Training", text: "Customised for your leadership team.", icon: "building-2" },
-          { title: "Executive Coaching", text: "One-to-one support for senior leaders.", icon: "user-check" },
-          { title: "Board Briefings", text: "Focused sessions for boards and committees.", icon: "presentation" }
+          { title: "Executive Workshops", text: "Intensive, practical sessions for senior leaders.", icon: "users" },
+          { title: "In-House Corporate Programmes", text: "Customised for your organisation and objectives.", icon: "building-2" },
+          { title: "Board Training", text: "Focused governance and financial oversight sessions.", icon: "presentation" },
+          { title: "Leadership Retreats", text: "Immersive strategy and capability sessions off-site.", icon: "compass" },
+          { title: "Online Delivery", text: "Live, facilitated virtual programmes.", icon: "cpu" },
+          { title: "Blended Programmes", text: "Combine online and in-person learning.", icon: "layers" },
+          { title: "Customised Academies", text: "Organisation-specific academies designed end to end.", icon: "graduation-cap" }
         ]
       },
       programmes: [
@@ -488,7 +516,7 @@ export const seedPages: Record<string, any> = {
     title: "Industries",
     seoTitle: "Industries | Milven Consulting Services",
     seoDesc: "Cross-sector experience and commercial perspective across African markets.",
-    heroTitle: "We Serve Diverse Industries",
+    heroTitle: "Cross-Sector Experience. Commercial Perspective.",
     heroText: "Deep sector experience. Practical insights. Real-world solutions.",
     heroImage: "/images/industries/financial-services.jpg",
     content: {
@@ -510,7 +538,7 @@ export const seedPages: Record<string, any> = {
       cta: {
         title: "Understanding Your Sector.",
         text: "We combine sector knowledge with functional expertise to advise organisations within your industry.",
-        primaryLabel: "Discuss Your Sector",
+        primaryLabel: "Discuss Your Challenge",
         primaryHref: "/contact"
       }
     }
@@ -720,5 +748,68 @@ export const seedInsights = [
 <p>Daily, weekly and monthly reporting have different purposes. Match the report to the decision cycle.</p>
 <blockquote>The test of a report is the action it provokes.</blockquote>
 <p>Milven helps organisations redesign reporting that drives performance.</p>`
+  },
+  {
+    slug: "building-a-finance-function-that-supports-growth",
+    title: "Building a Finance Function That Supports Growth",
+    category: "Corporate Performance",
+    excerpt:
+      "As businesses scale, finance must shift from recording history to shaping decisions.",
+    image: "/images/insights/finance.jpg",
+    featured: false,
+    readMinutes: 3,
+    author: "Milven Advisory",
+    authorRole: "Strategy & Financial Advisory",
+    body: `<p>Growth exposes weaknesses in the finance function that steady-state operations hide. What worked at one size rarely works at the next.</p>
+<h2>From processing to partnering</h2>
+<p>Finance should move beyond transaction processing and reporting to become a genuine partner to the business, informing pricing, investment and performance decisions.</p>
+<h2>Structure follows strategy</h2>
+<p>The finance operating model — people, process and systems — must be designed around the decisions leadership needs to make, not only around compliance.</p>
+<h2>Reporting that informs</h2>
+<p>Timely, decision-focused reporting is what allows finance to influence performance rather than merely describe it.</p>
+<blockquote>A finance function that only reports the past cannot help build the future.</blockquote>
+<p>Milven helps organisations design finance functions that scale with growth.</p>`
+  },
+  {
+    slug: "the-cfo-s-changing-role-in-the-age-of-ai",
+    title: "The CFO's Changing Role in the Age of AI",
+    category: "Technology",
+    excerpt:
+      "Automation and AI are reshaping finance. The CFO's value is shifting from control to insight.",
+    image: "/images/insights/technology.jpg",
+    featured: false,
+    readMinutes: 3,
+    author: "Milven Advisory",
+    authorRole: "Business Systems & Transformation",
+    body: `<p>AI and automation are changing what finance teams spend their time on. Routine processing is increasingly automated, and the CFO's role is moving decisively towards insight and strategy.</p>
+<h2>Less processing, more judgement</h2>
+<p>As automation absorbs transactional work, the premium shifts to interpretation, judgement and forward-looking analysis.</p>
+<h2>Data quality is the constraint</h2>
+<p>AI is only as good as the data and controls beneath it. Clean, well-governed financial data is the prerequisite for meaningful automation.</p>
+<h2>Guardrails matter</h2>
+<p>Controls, oversight and governance must evolve alongside adoption so that speed does not come at the cost of integrity.</p>
+<blockquote>The finance leaders who thrive will be those who wield technology, not those replaced by it.</blockquote>
+<p>Milven supports finance leaders in building digital finance capability.</p>`
+  },
+  {
+    slug: "why-cash-flow-matters-more-than-profit-during-rapid-growth",
+    title: "Why Cash Flow Matters More Than Profit During Rapid Growth",
+    category: "Finance",
+    excerpt:
+      "Profitable businesses can run out of cash. During rapid growth, cash discipline is survival.",
+    image: "/images/insights/finance.jpg",
+    featured: false,
+    readMinutes: 3,
+    author: "Milven Advisory",
+    authorRole: "Strategy & Financial Advisory",
+    body: `<p>Rapid growth consumes cash. Inventory, receivables and capacity all rise before the cash from new sales arrives — and many profitable businesses fail on this gap.</p>
+<h2>Profit is not cash</h2>
+<p>Accounting profit and cash generation are different things. Growing businesses must track both, and manage the conversion between them.</p>
+<h2>Working capital is the battleground</h2>
+<p>Receivables, payables and inventory determine how much growth a business can fund. Managing them well is a source of competitive advantage.</p>
+<h2>Forecast the cash, not just the profit</h2>
+<p>A rolling cash forecast gives leadership the visibility to fund growth deliberately rather than reactively.</p>
+<blockquote>Growth without cash discipline is a fast route to failure.</blockquote>
+<p>Milven helps organisations strengthen cash-flow and working-capital management.</p>`
   }
 ]

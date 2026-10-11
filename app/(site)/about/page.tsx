@@ -5,7 +5,7 @@ import { CtaBand } from "@/components/CtaBand"
 import { SectionHeading } from "@/components/SectionHeading"
 import { Icon } from "@/components/Icon"
 import { Reveal, RevealStagger, StaggerItem } from "@/components/motion/Reveal"
-import { getPage, getPageMetadata } from "@/lib/site"
+import { getPage, getPageMetadata, getTeamMembers } from "@/lib/site"
 
 const FALLBACK = {
   title: "About Milven",
@@ -21,6 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function AboutPage() {
   const page = await getPage("about")
   const c = (page?.content || {}) as any
+  const team = await getTeamMembers()
   const approach = c.approach || {}
   const differentiators = c.differentiators || {}
   const story = c.story || {}
@@ -185,6 +186,42 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
+
+      {team.length > 0 && (
+        <section className="section">
+          <div className="container-page">
+            <SectionHeading
+              align="center"
+              eyebrow="Our Team"
+              title="Leadership and advisors."
+              text="Senior advisors who work directly with boards, executives and owners."
+            />
+            <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+              {team.map((m) => (
+                <Reveal key={m.id}>
+                  <div className="text-center">
+                    {m.image && (
+                      <div className="relative mx-auto h-40 w-40 overflow-hidden rounded-full shadow-card">
+                        <Image src={m.image} alt={m.name} fill sizes="160px" className="object-cover" />
+                      </div>
+                    )}
+                    <h3 className="mt-5 font-serif text-xl text-navy-900">{m.name}</h3>
+                    <p className="mt-1 text-sm font-medium text-gold-600">{m.role}</p>
+                    {m.bio && (
+                      <p className="mx-auto mt-3 max-w-sm text-sm leading-7 text-slate-500">{m.bio}</p>
+                    )}
+                    {m.linkedin && (
+                      <a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block text-sm text-navy-500 hover:text-gold-600">
+                        LinkedIn
+                      </a>
+                    )}
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {c.finalCta && (
         <CtaBand

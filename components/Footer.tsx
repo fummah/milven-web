@@ -10,7 +10,7 @@ export function Footer({ settings }: { settings: GlobalSettings }) {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="relative overflow-hidden bg-navy-950 text-white">
+    <footer className="relative overflow-hidden bg-navy-950 text-white print:hidden">
       <div className="pointer-events-none absolute inset-0 bg-grid-gold opacity-[0.4]" />
       <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-gold-500/5 blur-3xl" />
 
@@ -28,7 +28,7 @@ export function Footer({ settings }: { settings: GlobalSettings }) {
               {footer?.description || brand?.description}
             </p>
             <p className="mt-6 font-serif text-xl italic text-gold-400">
-              {brand?.tagline}
+              {brand?.descriptor || brand?.tagline}
             </p>
           </div>
 

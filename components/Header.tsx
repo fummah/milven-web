@@ -9,6 +9,7 @@ import { ChevronDown, Menu, ArrowRight, MessageSquareText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
+import { track } from "@/lib/analytics"
 import type { GlobalSettings } from "@/lib/content-types"
 
 export function Header({ settings }: { settings: GlobalSettings }) {
@@ -46,7 +47,7 @@ export function Header({ settings }: { settings: GlobalSettings }) {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full border-b transition-all duration-300 ease-premium",
+        "sticky top-0 z-50 w-full border-b transition-all duration-300 ease-premium print:hidden",
         scrolled
           ? "border-navy-100/80 bg-white/90 shadow-[0_10px_30px_-18px_rgba(6,23,46,0.35)] backdrop-blur-xl"
           : "border-transparent bg-white"
@@ -153,7 +154,10 @@ export function Header({ settings }: { settings: GlobalSettings }) {
             size="default"
             className="gap-2.5 border border-gold-600/50 pl-4 pr-5 shadow-gold ring-1 ring-inset ring-white/30 hover:ring-white/50"
           >
-            <Link href={settings?.cta?.primaryHref || "/contact"}>
+            <Link
+              href={settings?.cta?.primaryHref || "/contact"}
+              onClick={() => track("talk_to_advisor_click", { placement: "header" })}
+            >
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy-900/10">
                 <MessageSquareText className="h-3.5 w-3.5" />
               </span>

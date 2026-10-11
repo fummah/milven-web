@@ -106,3 +106,95 @@ export async function sendContactEmail(input: ContactEmailInput): Promise<boolea
     return false
   }
 }
+
+export interface TrainingEnquiryInput {
+  programme?: string
+  organisation: string
+  contactName: string
+  email: string
+  telephone?: string
+  delegateCount?: string
+  seniority?: string
+  preferredDates?: string
+  location?: string
+  deliveryMode?: string
+  objectives: string
+}
+
+export async function sendTrainingEnquiryEmail(
+  input: TrainingEnquiryInput
+): Promise<boolean> {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    console.warn(
+      "[mail] RESEND_API_KEY is not set — training enquiry email skipped, saved to database."
+    )
+    return false
+  }
+
+  const from =
+    process.env.CONTACT_FROM_EMAIL || "Milven Website <onboarding@resend.dev>"
+  const to = process.env.CONTACT_TO_EMAIL || "advisory@milven.co.zw"
+
+  const rows: [string, string][] = [
+    ["Programme of interest", input.programme || "—"],
+    ["Organisation", input.organisation],
+    ["Contact name", input.contactName],
+    ["Email", input.email],
+    ["Telephone", input.telephone || "—"],
+    ["Delegate count", input.delegateCount || "—"],
+    ["Seniority", input.seniority || "—"],
+    ["Preferred dates", input.preferredDates || "—"],
+    ["Location", input.location || "—"],
+    ["Delivery mode", input.deliveryMode || "—"],
+    ["Received", new Date().toUTCString()]
+  ]
+
+  const text = [
+    ...rows.map(([label, value]) => `${label}: ${value}`),
+    "",
+    "Learning objectives:",
+    input.objectives
+  ].join("\n")
+
+  const html = `
+    <div style="font-family:Inter,Arial,sans-serif;color:#0A2342;max-width:600px">
+      <h2 style="margin:0 0 4px">New training proposal request</h2>
+      <p style="margin:0 0 20px;color:#4D5B6A">A corporate training enquiry was submitted via the Milven website.</p>
+      <table style="width:100%;border-collapse:collapse">
+        ${rows
+          .map(
+            ([label, value]) => `
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #EEF1F5;color:#4D5B6A;width:42%">${label}</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #EEF1F5;font-weight:600">${escape(value)}</td>
+          </tr>`
+          )
+          .join("")}
+      </table>
+      <div style="margin-top:20px;padding:16px;background:#F7F5EF;border-radius:10px;white-space:pre-wrap">${escape(
+        input.objectives
+      )}</div>
+    </div>
+  `
+
+  try {
+    const resend = new Resend(apiKey)
+    const { error } = await resend.emails.send({
+      from,
+      to,
+      replyTo: input.email,
+      subject: `Training proposal request — ${input.organisation}`,
+      text,
+      html
+    })
+    if (error) {
+      console.error("[mail] Resend returned an error:", error)
+      return false
+    }
+    return true
+  } catch (error) {
+    console.error("[mail] Failed to send training enquiry email:", error)
+    return false
+  }
+}

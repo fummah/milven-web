@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { sendContactEmail } from "@/lib/mail"
+import { forwardToCrm } from "@/lib/crm"
 import { contactSchema } from "@/lib/validations"
 
 async function verifyTurnstile(token?: string) {
@@ -91,6 +92,17 @@ export async function POST(req: Request) {
       })
       .catch(() => undefined)
   }
+
+  await forwardToCrm("contact", {
+    name: data.name,
+    email: data.email,
+    organisation: data.organisation,
+    role: data.role,
+    telephone: data.telephone,
+    service: data.service,
+    preferredMethod: data.preferredMethod,
+    message: data.message
+  })
 
   return NextResponse.json({ ok: true, id: saved.id, emailed })
 }

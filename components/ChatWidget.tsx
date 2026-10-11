@@ -13,6 +13,7 @@ import {
   Mail
 } from "lucide-react"
 import { toast } from "sonner"
+import { track } from "@/lib/analytics"
 
 export function ChatWidget() {
   const pathname = usePathname()
@@ -49,6 +50,7 @@ export function ChatWidget() {
       if (!res.ok) throw new Error(data.error || "Could not send your message")
       setSent(true)
       setForm({ name: "", email: "", message: "" })
+      track("contact_form_submit", { source: "chat_widget" })
       toast.success("Message sent", {
         description: "A member of the Milven team will be in touch shortly."
       })

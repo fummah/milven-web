@@ -12,6 +12,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/industries",
     "/academy",
     "/insights",
+    "/case-studies",
+    "/company-profile",
     "/contact",
     "/privacy",
     "/terms"
@@ -38,5 +40,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     /* database unavailable at build time */
   }
 
-  return [...staticRoutes, ...insights]
+  let caseStudies: MetadataRoute.Sitemap = []
+  try {
+    const rows = await prisma.caseStudy.findMany({
+      where: { published: true },
+      select: { slug: true, updatedAt: true }
+    })
+    caseStudies = rows.map((r) => ({
+      url: `${siteUrl}/case-studies/${r.slug}`,
+      lastModified: r.updatedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.6
+    }))
+  } catch {
+    /* database unavailable at build time */
+  }
+
+  return [...staticRoutes, ...insights, ...caseStudies]
 }
