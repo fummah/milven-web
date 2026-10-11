@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false }
 }
 
-export default async function AdminLoginPage({
+export default async function LoginPage({
   searchParams
 }: {
   searchParams: Promise<{ from?: string }>

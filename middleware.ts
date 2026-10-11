@@ -22,6 +22,11 @@ async function getRedirects(req: NextRequest) {
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
+  // The login page is always reachable.
+  if (pathname === "/login" || pathname === "/admin/login") {
+    return NextResponse.next()
+  }
+
   // 1) CMS-managed redirects (public paths only)
   if (!pathname.startsWith("/api")) {
     const redirects = await getRedirects(req)
@@ -39,8 +44,6 @@ export async function middleware(req: NextRequest) {
   const isCms = pathname.startsWith("/api/cms")
   if (!isAdmin && !isCms) return NextResponse.next()
 
-  if (pathname === "/admin/login") return NextResponse.next()
-
   const token = req.cookies.get(SESSION_COOKIE)?.value
   const session = await verifySession(token)
   if (session) return NextResponse.next()
@@ -53,7 +56,7 @@ export async function middleware(req: NextRequest) {
   }
 
   const url = req.nextUrl.clone()
-  url.pathname = "/admin/login"
+  url.pathname = "/login"
   url.searchParams.set("from", pathname)
   return NextResponse.redirect(url)
 }

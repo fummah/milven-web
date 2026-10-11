@@ -1,13 +1,18 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { guardApi } from "@/lib/auth"
 
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
+  const guard = await guardApi()
+  if (guard) return guard
   const { id } = await params
   const item = await prisma.contactSubmission.findUnique({ where: { id } })
   return NextResponse.json(item)
 }
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const guard = await guardApi()
+  if (guard) return guard
   const { id } = await params
   const data = await req.json()
   const item = await prisma.contactSubmission.update({ where: { id }, data })
@@ -15,6 +20,8 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 }
 
 export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
+  const guard = await guardApi()
+  if (guard) return guard
   const { id } = await params
   await prisma.contactSubmission.delete({ where: { id } })
   return NextResponse.json({ ok: true })

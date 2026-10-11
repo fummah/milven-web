@@ -2,8 +2,11 @@ import { NextResponse } from "next/server"
 import { unlink } from "fs/promises"
 import path from "path"
 import { prisma } from "@/lib/prisma"
+import { guardApi } from "@/lib/auth"
 
 export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
+  const guard = await guardApi()
+  if (guard) return guard
   const { id } = await params
   const asset = await prisma.mediaAsset.findUnique({ where: { id } })
   if (!asset) return NextResponse.json({ error: "Not found" }, { status: 404 })
@@ -21,6 +24,8 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ id: str
 }
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const guard = await guardApi()
+  if (guard) return guard
   const { id } = await params
   const data = await req.json()
   const asset = await prisma.mediaAsset.update({ where: { id }, data })

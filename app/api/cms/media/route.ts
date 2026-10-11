@@ -4,16 +4,21 @@ import path from "path"
 import crypto from "crypto"
 import sharp from "sharp"
 import { prisma } from "@/lib/prisma"
+import { guardApi } from "@/lib/auth"
 
 const MAX_SIZE = 8 * 1024 * 1024
 const allowed = new Set(["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"])
 
 export async function GET() {
+  const guard = await guardApi()
+  if (guard) return guard
   const items = await prisma.mediaAsset.findMany({ orderBy: { createdAt: "desc" } })
   return NextResponse.json(items)
 }
 
 export async function POST(req: Request) {
+  const guard = await guardApi()
+  if (guard) return guard
   const form = await req.formData()
   const file = form.get("file")
 

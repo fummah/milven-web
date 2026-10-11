@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { guardApi } from "@/lib/auth"
 
 export async function GET() {
+  const guard = await guardApi()
+  if (guard) return guard
   const items = await prisma.caseStudy.findMany({
     orderBy: [{ order: "asc" }, { createdAt: "desc" }]
   })
@@ -9,6 +12,8 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const guard = await guardApi()
+  if (guard) return guard
   const data = await req.json()
   const item = await prisma.caseStudy.create({ data })
   return NextResponse.json(item)
