@@ -143,7 +143,7 @@ cd /opt/milven-website
 docker compose -f docker-compose.prod.yml run --rm web npx tsx prisma/seed.ts
 ```
 
-Afterwards open `https://your-domain.com/login` and sign in with
+Afterwards open `https://your-domain.com/admin/login` and sign in with
 `ADMIN_EMAIL` / `ADMIN_PASSWORD`.
 
 > Migrations run automatically on every container start (`prisma migrate deploy`),

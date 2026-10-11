@@ -22,7 +22,7 @@ export async function getAdminSession() {
 /** Page-level guard: redirects unauthenticated visitors to the CMS login. */
 export async function requireAdmin() {
   const session = await getAdminSession()
-  if (!session) redirect("/login")
+  if (!session) redirect("/admin/login")
   return session
 }
 

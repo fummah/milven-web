@@ -11,7 +11,7 @@ export function LogoutButton() {
   async function logout() {
     setLoading(true)
     await fetch("/api/auth/logout", { method: "POST" })
-    router.replace("/login")
+    router.replace("/admin/login")
     router.refresh()
   }
 

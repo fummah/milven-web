@@ -23,7 +23,7 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
   // The login page is always reachable.
-  if (pathname === "/login" || pathname === "/admin/login") {
+  if (pathname === "/admin/login" || pathname === "/login") {
     return NextResponse.next()
   }
 
@@ -56,7 +56,7 @@ export async function middleware(req: NextRequest) {
   }
 
   const url = req.nextUrl.clone()
-  url.pathname = "/login"
+  url.pathname = "/admin/login"
   url.searchParams.set("from", pathname)
   return NextResponse.redirect(url)
 }
