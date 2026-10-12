@@ -84,6 +84,7 @@ export function HomeHero({
     return () => clearInterval(id)
   }, [reduce, total])
 
+  // Split the headline into whole sentences so each renders on its own line.
   const lines = React.useMemo(
     () =>
       (title.match(/[^.!?]+[.!?]?/g) || [title])
@@ -97,39 +98,37 @@ export function HomeHero({
   return (
     <>
       {/* ================= MOBILE ================= */}
-      <section className="relative min-h-[40rem] overflow-hidden bg-cream lg:hidden">
-        <div className="pointer-events-none absolute inset-0 bg-dots opacity-70" />
+      <section className="relative flex min-h-[calc(100svh-7.5rem)] flex-col overflow-hidden bg-cream lg:hidden">
+        {/* sliders image as the hero background (mobile only) */}
+        <HeroBackground
+          images={slides}
+          index={reduce ? 0 : index % total}
+          showDots={false}
+          imgClassName="object-[72%_center]"
+        />
+        {/* readable overlays: cream on the left, soft cream toward the bottom */}
+        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/85 to-cream/25" />
+        <div className="absolute inset-0 bg-gradient-to-t from-cream via-cream/40 to-transparent" />
+        {/* subtle gold arc, top-right */}
+        <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full border-2 border-gold-400/50" />
 
-        {/* curved image panel on the right */}
-        <div className="absolute bottom-44 right-0 top-14 w-[52%] rounded-l-[5rem] bg-gradient-to-b from-gold-400/90 to-gold-600/90 p-[3px]">
-          <div className="relative h-full w-full overflow-hidden rounded-l-[4.85rem]">
-            <HeroBackground
-              images={slides}
-              index={reduce ? 0 : index % total}
-              showDots={false}
-              imgClassName="object-[74%_center]"
-            />
-            <div className="absolute inset-0 bg-gradient-to-l from-navy-950/10 via-transparent to-cream/50" />
-          </div>
-        </div>
-
-        <div className="container-page relative z-10 flex min-h-[40rem] flex-col pt-8">
+        <div className="container-page relative z-10 flex flex-1 flex-col pb-6 pt-8">
           <p className="eyebrow mb-4">
             <span className="h-px w-6 bg-gold-500" />
             {eyebrow}
           </p>
 
-          <h1 className="max-w-[64%] font-serif text-[2.6rem] leading-[1.02] text-navy-900">
+          <h1 className="font-serif text-[1.85rem] leading-[1.08] text-navy-900">
             {lines.map((line, i) => {
               const isLast = i === lines.length - 1
               const base = isLast ? line.replace(/\.$/, "") : line
               return (
-                <span key={`${line}-${i}`} className="block">
+                <span key={`${line}-${i}`} className="block whitespace-nowrap">
                   {isLast ? (
                     <span className="relative inline-block">
                       {base}
                       <span className="text-gold-500">.</span>
-                      <span className="pointer-events-none absolute -bottom-1.5 left-0 h-3 w-full">
+                      <span className="pointer-events-none absolute -bottom-1 left-0 h-2.5 w-full">
                         <HeroUnderline />
                       </span>
                     </span>
@@ -141,12 +140,12 @@ export function HomeHero({
             })}
           </h1>
 
-          <p className="mt-6 max-w-[62%] text-[0.95rem] leading-7 text-slate-600">
+          <p className="mt-5 max-w-[78%] text-[0.95rem] leading-7 text-slate-700">
             {text}
           </p>
 
           <div className="mt-auto pt-8">
-            {/* slider controls (mobile only) */}
+            {/* mobile slider controls */}
             <div className="flex items-center justify-between">
               <button
                 type="button"
@@ -184,7 +183,7 @@ export function HomeHero({
               </button>
             </div>
 
-            {/* CTAs */}
+            {/* CTAs — always visible on the landing view */}
             <div className="mt-6 space-y-3">
               <Button asChild size="lg" className="w-full justify-between">
                 <Link href={primaryHref}>
@@ -203,11 +202,10 @@ export function HomeHero({
         </div>
       </section>
 
-      {/* ================= DESKTOP ================= */}
+      {/* ================= DESKTOP (unchanged) ================= */}
       <section className="relative hidden overflow-hidden bg-cream lg:flex lg:min-h-[calc(100vh-7.5rem)] lg:items-center">
         <div className="pointer-events-none absolute inset-y-0 left-0 w-[52%] bg-dots opacity-70" />
 
-        {/* desktop diagonal image */}
         <div className="absolute inset-y-0 right-0 w-[56%]">
           <motion.div
             initial={reduce ? false : { opacity: 0, scale: 1.05 }}
@@ -305,7 +303,6 @@ export function HomeHero({
           </div>
         </div>
 
-        {/* floating card */}
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
