@@ -42,7 +42,7 @@ services:
 
       AUTH_SECRET: ${AUTH_SECRET:?set AUTH_SECRET in .env}
 
-      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://milven.co.zw}
 
       NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY:-}
       TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY:-}
@@ -58,8 +58,8 @@ services:
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?set ADMIN_PASSWORD in .env}
       ADMIN_NAME: ${ADMIN_NAME:-Milven Administrator}
 
-    ports:
-      - "${APP_PORT:-3000}:3000"
+    expose:
+      - "3000"
 
     volumes:
       - uploads:/app/public/uploads
@@ -67,21 +67,26 @@ services:
 
   backup:
     image: prodrigestivill/postgres-backup-local:16
-    restart: unless-stopped
     container_name: milven_website_backup
+    restart: unless-stopped
+
     depends_on:
       db:
         condition: service_healthy
+
     environment:
       POSTGRES_HOST: db
       POSTGRES_DB: ${POSTGRES_DB:-milvenweb}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
       SCHEDULE: "@daily"
       BACKUP_KEEP_DAYS: 7
       BACKUP_KEEP_WEEKS: 4
       BACKUP_KEEP_MONTHS: 6
+
       TZ: Africa/Harare
+
     volumes:
       - backups:/backups
 
