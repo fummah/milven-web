@@ -11,15 +11,12 @@ concurrency:
   group: production-deploy
   cancel-in-progress: false
 
-
 jobs:
-
   test:
     name: Test and Build
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -76,7 +73,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -348,24 +344,18 @@ jobs:
               exit 1
             fi
 
-            echo "Health check..."
+            echo "Checking Milven application..."
 
-            docker exec milven_website_web \
-            node -e "
-            fetch('http://127.0.0.1:3000/')
-            .then(r => {
-            if (!r.ok) process.exit(1);
-            console.log('HTTP', r.status);
-            })
-            .catch(err => {
-            console.error(err);
-            process.exit(1);
-            });
-            "
+            docker exec milven_website_web sh -lc 'node -e "fetch(\"http://127.0.0.1:3000/\").then(r=>{console.log(\"HTTP status:\",r.status);process.exit(r.ok?0:1)}).catch(e=>{console.error(e);process.exit(1)})"'
 
-            echo "Health check passed."
+            echo "Application health check passed."
 
-            echo "Cleaning dangling Docker images.."
+            echo "Container details:"
+            docker inspect \
+              --format='Running={{.State.Running}} IP={{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
+              milven_website_web
+
+            echo "Cleaning dangling Docker images..."
             docker image prune -f
 
             echo "======================================"
