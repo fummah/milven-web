@@ -13,7 +13,7 @@ const buttonVariants = cva(
         navy:
           "bg-navy-800 text-white hover:bg-navy-700 hover:-translate-y-0.5 shadow-premium",
         outline:
-          "border border-navy-200 bg-transparent text-navy-800 hover:border-navy-800 hover:bg-navy-900 hover:text-white",
+          "border border-navy-900 bg-transparent text-navy-900 hover:border-navy-900 hover:bg-navy-900 hover:text-white",
         goldOutline:
           "border border-gold-500 bg-white text-navy-900 hover:bg-gold-500 hover:text-navy-900 hover:-translate-y-0.5 hover:shadow-gold",
         ghost:
