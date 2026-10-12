@@ -350,13 +350,18 @@ jobs:
 
             echo "Health check..."
 
-            curl \
-              --fail \
-              --silent \
-              --show-error \
-              --max-time 30 \
-              http://127.0.0.1:3000/ \
-              > /dev/null
+            docker exec milven_website_web \
+            node -e "
+            fetch('http://127.0.0.1:3000/')
+            .then(r => {
+            if (!r.ok) process.exit(1);
+            console.log('HTTP', r.status);
+            })
+            .catch(err => {
+            console.error(err);
+            process.exit(1);
+            });
+            "
 
             echo "Health check passed."
 
