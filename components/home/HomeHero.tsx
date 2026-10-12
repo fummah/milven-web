@@ -3,10 +3,12 @@
 import * as React from "react"
 import Link from "next/link"
 import { motion, useReducedMotion } from "framer-motion"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/Icon"
 import { ArrowBadge } from "@/components/ArrowBadge"
 import { HeroBackground } from "@/components/HeroBackground"
+import { cn } from "@/lib/utils"
 
 const container = {
   hidden: {},
@@ -74,12 +76,13 @@ export function HomeHero({
   const reduce = useReducedMotion()
   const slides = React.useMemo(() => images.filter(Boolean), [images])
   const [index, setIndex] = React.useState(0)
+  const total = slides.length
 
   React.useEffect(() => {
-    if (reduce || slides.length < 2) return
-    const id = setInterval(() => setIndex((i) => (i + 1) % slides.length), 6800)
+    if (reduce || total < 2) return
+    const id = setInterval(() => setIndex((i) => (i + 1) % total), 6800)
     return () => clearInterval(id)
-  }, [reduce, slides.length])
+  }, [reduce, total])
 
   const lines = React.useMemo(
     () =>
@@ -89,135 +92,239 @@ export function HomeHero({
     [title]
   )
 
+  const go = (dir: number) => setIndex((i) => ((i + dir) % total + total) % total)
+
   return (
-    <section className="relative overflow-hidden bg-cream">
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-dots opacity-70 lg:w-[52%]" />
+    <>
+      {/* ================= MOBILE ================= */}
+      <section className="relative min-h-[40rem] overflow-hidden bg-cream lg:hidden">
+        <div className="pointer-events-none absolute inset-0 bg-dots opacity-70" />
 
-      {/* desktop diagonal image */}
-      <div className="absolute inset-y-0 right-0 hidden w-[56%] lg:block">
-        <motion.div
-          initial={reduce ? false : { opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0"
-        >
-        <div
-          className="absolute inset-0 bg-gradient-to-b from-gold-400 to-gold-600"
-          style={{ clipPath: "polygon(16% 0, 100% 0, 100% 100%, 0 100%)" }}
-        />
-        <div
-          className="absolute inset-0 overflow-hidden"
-          style={{ clipPath: "polygon(18% 0, 100% 0, 100% 100%, 2% 100%)" }}
-        >
-          <HeroBackground images={slides} index={index} onSelect={setIndex} showDots />
-          <div className="absolute inset-0 bg-navy-950/25" />
-        </div>
-        </motion.div>
-      </div>
-
-      <div className="container-page relative w-full">
-        <div className="grid items-center gap-10 lg:grid-cols-2">
-          <div className="py-12 lg:py-20 lg:pr-8">
-            <motion.div
-              variants={container}
-              initial={reduce ? false : "hidden"}
-              animate="show"
-            >
-              <motion.p variants={item} className="eyebrow mb-6">
-                <span className="h-px w-8 bg-gold-500" />
-                {eyebrow}
-              </motion.p>
-
-              <motion.h1
-                variants={lineGroup}
-                className="text-balance font-sans text-4xl font-extrabold leading-[1.05] tracking-tight text-navy-900 sm:text-5xl lg:text-[3.5rem]"
-              >
-                {lines.map((line, i) => {
-                  const isLast = i === lines.length - 1
-                  const base = isLast ? line.replace(/\.$/, "") : line
-                  return (
-                    <motion.span key={`${line}-${i}`} variants={item} className="block">
-                      {isLast ? (
-                        <span className="relative inline-block">
-                          {base}
-                          <span className="text-gold-500">.</span>
-                          {reduce ? (
-                            <span className="pointer-events-none absolute -bottom-2.5 left-0 h-3 w-full">
-                              <HeroUnderline />
-                            </span>
-                          ) : (
-                            <motion.span
-                              initial={{ scaleX: 0 }}
-                              animate={{ scaleX: 1 }}
-                              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
-                              style={{ originX: 0 }}
-                              className="pointer-events-none absolute -bottom-2.5 left-0 h-3 w-full"
-                            >
-                              <HeroUnderline />
-                            </motion.span>
-                          )}
-                        </span>
-                      ) : (
-                        base
-                      )}
-                    </motion.span>
-                  )
-                })}
-              </motion.h1>
-
-              <motion.p
-                variants={item}
-                className="mt-6 max-w-xl text-lg leading-8 text-slate-600"
-              >
-                {text}
-              </motion.p>
-
-              <motion.div variants={item} className="mt-9 flex flex-wrap gap-3">
-                <Button asChild size="lg">
-                  <Link href={primaryHref}>
-                    {primaryLabel}
-                    <ArrowBadge />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                  <Link href={secondaryHref}>
-                    {secondaryLabel}
-                    <ArrowBadge />
-                  </Link>
-                </Button>
-              </motion.div>
-            </motion.div>
+        {/* curved image panel on the right */}
+        <div className="absolute bottom-44 right-0 top-14 w-[52%] rounded-l-[5rem] bg-gradient-to-b from-gold-400/90 to-gold-600/90 p-[3px]">
+          <div className="relative h-full w-full overflow-hidden rounded-l-[4.85rem]">
+            <HeroBackground
+              images={slides}
+              index={reduce ? 0 : index % total}
+              showDots={false}
+              imgClassName="object-[74%_center]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-l from-navy-950/10 via-transparent to-cream/50" />
           </div>
+        </div>
 
-          {/* mobile image */}
-          <div className="relative pb-8 lg:hidden">
-            <div className="relative h-64 overflow-hidden rounded-2xl sm:h-80">
-              <HeroBackground images={slides} index={reduce ? 0 : index % slides.length} showDots={false} />
-              <div className="absolute inset-0 bg-navy-950/25" />
+        <div className="container-page relative z-10 flex min-h-[40rem] flex-col pt-8">
+          <p className="eyebrow mb-4">
+            <span className="h-px w-6 bg-gold-500" />
+            {eyebrow}
+          </p>
+
+          <h1 className="max-w-[64%] font-serif text-[2.6rem] leading-[1.02] text-navy-900">
+            {lines.map((line, i) => {
+              const isLast = i === lines.length - 1
+              const base = isLast ? line.replace(/\.$/, "") : line
+              return (
+                <span key={`${line}-${i}`} className="block">
+                  {isLast ? (
+                    <span className="relative inline-block">
+                      {base}
+                      <span className="text-gold-500">.</span>
+                      <span className="pointer-events-none absolute -bottom-1.5 left-0 h-3 w-full">
+                        <HeroUnderline />
+                      </span>
+                    </span>
+                  ) : (
+                    base
+                  )}
+                </span>
+              )
+            })}
+          </h1>
+
+          <p className="mt-6 max-w-[62%] text-[0.95rem] leading-7 text-slate-600">
+            {text}
+          </p>
+
+          <div className="mt-auto pt-8">
+            {/* slider controls (mobile only) */}
+            <div className="flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => go(-1)}
+                aria-label="Previous slide"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-navy-100 bg-white text-navy-900 shadow-sm transition-colors hover:bg-cream"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+
+              <div className="flex items-center gap-2.5">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setIndex(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    className={cn(
+                      "h-2.5 rounded-full transition-all duration-300",
+                      i === (reduce ? 0 : index % total)
+                        ? "w-2.5 bg-gold-500"
+                        : "w-2.5 bg-navy-200 hover:bg-navy-300"
+                    )}
+                  />
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => go(1)}
+                aria-label="Next slide"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-navy-100 bg-white text-navy-900 shadow-sm transition-colors hover:bg-cream"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* CTAs */}
+            <div className="mt-6 space-y-3">
+              <Button asChild size="lg" className="w-full justify-between">
+                <Link href={primaryHref}>
+                  <span>{primaryLabel}</span>
+                  <ArrowBadge />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="w-full justify-between">
+                <Link href={secondaryHref}>
+                  <span>{secondaryLabel}</span>
+                  <ArrowBadge />
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* floating card */}
-      <motion.div
-        initial={reduce ? false : { opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.45 }}
-        className="absolute bottom-10 left-1/2 z-20 hidden w-auto rounded-2xl bg-white p-5 shadow-premium lg:block lg:left-[42%]"
-      >
-        <div className="flex items-center gap-4">
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cream text-gold-600 ring-1 ring-gold-500/30">
-            <Icon name="layers" className="h-6 w-6" />
-          </span>
-          <div>
-            <p className="whitespace-nowrap font-sans text-lg font-bold leading-tight text-navy-900">
-              {cardTitle}
-            </p>
-            <p className="whitespace-nowrap text-sm text-slate-500">{cardSubtitle}</p>
+      {/* ================= DESKTOP ================= */}
+      <section className="relative hidden overflow-hidden bg-cream lg:flex lg:min-h-[calc(100vh-7.5rem)] lg:items-center">
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-[52%] bg-dots opacity-70" />
+
+        {/* desktop diagonal image */}
+        <div className="absolute inset-y-0 right-0 w-[56%]">
+          <motion.div
+            initial={reduce ? false : { opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0"
+          >
+            <div
+              className="absolute inset-0 bg-gradient-to-b from-gold-400 to-gold-600"
+              style={{ clipPath: "polygon(16% 0, 100% 0, 100% 100%, 0 100%)" }}
+            />
+            <div
+              className="absolute inset-0 overflow-hidden"
+              style={{ clipPath: "polygon(18% 0, 100% 0, 100% 100%, 2% 100%)" }}
+            >
+              <HeroBackground images={slides} index={index} onSelect={setIndex} showDots />
+              <div className="absolute inset-0 bg-navy-950/25" />
+            </div>
+          </motion.div>
+        </div>
+
+        <div className="container-page relative w-full">
+          <div className="grid items-center gap-10 lg:grid-cols-2">
+            <div className="py-20 pr-8">
+              <motion.div
+                variants={container}
+                initial={reduce ? false : "hidden"}
+                animate="show"
+              >
+                <motion.p variants={item} className="eyebrow mb-6">
+                  <span className="h-px w-8 bg-gold-500" />
+                  {eyebrow}
+                </motion.p>
+
+                <motion.h1
+                  variants={lineGroup}
+                  className="text-balance font-sans text-5xl font-extrabold leading-[1.05] tracking-tight text-navy-900 lg:text-[3.5rem]"
+                >
+                  {lines.map((line, i) => {
+                    const isLast = i === lines.length - 1
+                    const base = isLast ? line.replace(/\.$/, "") : line
+                    return (
+                      <motion.span key={`${line}-${i}`} variants={item} className="block">
+                        {isLast ? (
+                          <span className="relative inline-block">
+                            {base}
+                            <span className="text-gold-500">.</span>
+                            {reduce ? (
+                              <span className="pointer-events-none absolute -bottom-2.5 left-0 h-3 w-full">
+                                <HeroUnderline />
+                              </span>
+                            ) : (
+                              <motion.span
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: 1 }}
+                                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
+                                style={{ originX: 0 }}
+                                className="pointer-events-none absolute -bottom-2.5 left-0 h-3 w-full"
+                              >
+                                <HeroUnderline />
+                              </motion.span>
+                            )}
+                          </span>
+                        ) : (
+                          base
+                        )}
+                      </motion.span>
+                    )
+                  })}
+                </motion.h1>
+
+                <motion.p
+                  variants={item}
+                  className="mt-6 max-w-xl text-lg leading-8 text-slate-600"
+                >
+                  {text}
+                </motion.p>
+
+                <motion.div variants={item} className="mt-9 flex flex-wrap gap-3">
+                  <Button asChild size="lg">
+                    <Link href={primaryHref}>
+                      {primaryLabel}
+                      <ArrowBadge />
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                    <Link href={secondaryHref}>
+                      {secondaryLabel}
+                      <ArrowBadge />
+                    </Link>
+                  </Button>
+                </motion.div>
+              </motion.div>
+            </div>
           </div>
         </div>
-      </motion.div>
-    </section>
+
+        {/* floating card */}
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.45 }}
+          className="absolute bottom-10 left-[42%] z-20 w-auto rounded-2xl bg-white p-5 shadow-premium"
+        >
+          <div className="flex items-center gap-4">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cream text-gold-600 ring-1 ring-gold-500/30">
+              <Icon name="layers" className="h-6 w-6" />
+            </span>
+            <div>
+              <p className="whitespace-nowrap font-sans text-lg font-bold leading-tight text-navy-900">
+                {cardTitle}
+              </p>
+              <p className="whitespace-nowrap text-sm text-slate-500">{cardSubtitle}</p>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+    </>
   )
 }

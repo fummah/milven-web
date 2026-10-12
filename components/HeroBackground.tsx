@@ -8,12 +8,16 @@ export function HeroBackground({
   images,
   index = 0,
   onSelect,
-  showDots = true
+  showDots = true,
+  imgClassName,
+  priority
 }: {
   images: string[]
   index?: number
   onSelect?: (i: number) => void
   showDots?: boolean
+  imgClassName?: string
+  priority?: boolean
 }) {
   const reduce = useReducedMotion()
   const slides = images.filter(Boolean)
@@ -36,11 +40,12 @@ export function HeroBackground({
             src={slides[current]}
             alt="Milven Consulting Services — advisory and transformation"
             fill
-            priority={current === 0}
-            sizes="100vw"
+            priority={priority ?? current === 0}
+            sizes="(max-width: 1024px) 100vw, 60vw"
             className={cn(
               "object-cover object-[60%_center] brightness-110 contrast-[1.02]",
-              !reduce && "animate-kenburns"
+              !reduce && "animate-kenburns",
+              imgClassName
             )}
           />
         </motion.div>

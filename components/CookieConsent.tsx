@@ -45,7 +45,7 @@ export function CookieConsent() {
       )}
 
       {ready && consent === null && (
-        <div className="fixed bottom-4 left-4 z-[90] max-w-sm rounded-2xl border border-navy-100 bg-white p-5 shadow-premium print:hidden">
+        <div className="fixed bottom-4 left-4 right-4 z-[90] max-w-sm rounded-2xl border border-navy-100 bg-white p-5 shadow-premium print:hidden sm:right-auto">
           <p className="font-sans text-sm font-bold text-navy-900">
             Cookies &amp; privacy
           </p>
