@@ -106,9 +106,9 @@ export function HomeHero({
           showDots={false}
           imgClassName="object-[72%_center]"
         />
-        {/* readable overlays: cream on the left, soft cream toward the bottom */}
-        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/85 to-cream/25" />
-        <div className="absolute inset-0 bg-gradient-to-t from-cream via-cream/40 to-transparent" />
+        {/* readable overlays: cream on the left, clear on the right, soft cream at the bottom */}
+        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-cream/85 via-transparent to-transparent" />
         {/* subtle gold arc, top-right */}
         <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full border-2 border-gold-400/50" />
 
@@ -118,7 +118,7 @@ export function HomeHero({
             {eyebrow}
           </p>
 
-          <h1 className="font-serif text-[1.85rem] leading-[1.08] text-navy-900">
+          <h1 className="font-serif text-[2rem] leading-[1.08] text-navy-900">
             {lines.map((line, i) => {
               const isLast = i === lines.length - 1
               const base = isLast ? line.replace(/\.$/, "") : line
