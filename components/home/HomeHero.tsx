@@ -27,7 +27,7 @@ const item = {
   }
 }
 
-function HeroUnderline() {
+function HeroUnderline({ id = "hero-underline" }: { id?: string }) {
   return (
     <svg
       viewBox="0 0 300 12"
@@ -36,7 +36,7 @@ function HeroUnderline() {
       aria-hidden="true"
     >
       <defs>
-        <linearGradient id="hero-underline" x1="0" y1="0" x2="1" y2="0">
+        <linearGradient id={id} x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stopColor="#B9852F" />
           <stop offset="45%" stopColor="#D9AE5F" />
           <stop offset="100%" stopColor="#C89A45" />
@@ -44,7 +44,7 @@ function HeroUnderline() {
       </defs>
       <path
         d="M1.5 6.4 C 44 1.8, 108 0.9, 168 2.7 C 224 4.4, 261 5.9, 298.5 4.1 C 264 9.6, 209 11.3, 150 10.7 C 92 10.1, 42 9.6, 1.5 6.4 Z"
-        fill="url(#hero-underline)"
+        fill={`url(#${id})`}
       />
     </svg>
   )
@@ -136,7 +136,7 @@ export function HomeHero({
                       {base}
                       <span className="text-gold-500">.</span>
                       <span className="pointer-events-none absolute -bottom-1 left-0 h-2.5 w-full">
-                        <HeroUnderline />
+                        <HeroUnderline id="hero-underline-m" />
                       </span>
                     </span>
                   ) : (
@@ -262,7 +262,7 @@ export function HomeHero({
                             <span className="text-gold-500">.</span>
                             {reduce ? (
                               <span className="pointer-events-none absolute -bottom-2.5 left-0 h-3 w-full">
-                                <HeroUnderline />
+                                <HeroUnderline id="hero-underline-d" />
                               </span>
                             ) : (
                               <motion.span
@@ -272,7 +272,7 @@ export function HomeHero({
                                 style={{ originX: 0 }}
                                 className="pointer-events-none absolute -bottom-2.5 left-0 h-3 w-full"
                               >
-                                <HeroUnderline />
+                                <HeroUnderline id="hero-underline-d" />
                               </motion.span>
                             )}
                           </span>
