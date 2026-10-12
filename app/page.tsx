@@ -9,6 +9,7 @@ import { SectionHeading } from "@/components/SectionHeading"
 import { Reveal, RevealStagger, StaggerItem } from "@/components/motion/Reveal"
 import { HomeHero } from "@/components/home/HomeHero"
 import { TrackedLink } from "@/components/TrackedLink"
+import { ArrowBadge } from "@/components/ArrowBadge"
 import { CountUp } from "@/components/CountUp"
 import { getPage, getInsights, getSettings } from "@/lib/site"
 import { defaultSettings } from "@/lib/defaults"
@@ -305,7 +306,7 @@ export default async function Home() {
               <Button asChild variant="navy" size="lg">
                 <Link href="/academy">
                   {academy.cta || "Explore the Academy"}
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowBadge />
                 </Link>
               </Button>
             </div>

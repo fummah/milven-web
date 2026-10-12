@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ArrowBadge } from "@/components/ArrowBadge"
 import { Reveal } from "@/components/motion/Reveal"
 import { cn } from "@/lib/utils"
 
@@ -117,7 +117,7 @@ export function PageHero({
                   <Button asChild variant="primary" size="lg">
                     <Link href={primary.href}>
                       {primary.label}
-                      <ArrowRight className="h-4 w-4" />
+                      <ArrowBadge />
                     </Link>
                   </Button>
                 )}

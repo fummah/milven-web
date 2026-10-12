@@ -3,9 +3,9 @@
 import * as React from "react"
 import Link from "next/link"
 import { motion, useReducedMotion } from "framer-motion"
-import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/Icon"
+import { ArrowBadge } from "@/components/ArrowBadge"
 import { HeroBackground } from "@/components/HeroBackground"
 
 const container = {
@@ -176,13 +176,13 @@ export function HomeHero({
                 <Button asChild size="lg">
                   <Link href={primaryHref}>
                     {primaryLabel}
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowBadge />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">
                   <Link href={secondaryHref}>
                     {secondaryLabel}
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowBadge />
                   </Link>
                 </Button>
               </motion.div>

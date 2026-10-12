@@ -5,8 +5,9 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
-import { ChevronDown, Menu, ArrowRight, MessageSquareText } from "lucide-react"
+import { ChevronDown, Menu, MessageSquareText } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ArrowBadge } from "@/components/ArrowBadge"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
 import { track } from "@/lib/analytics"
@@ -222,7 +223,7 @@ export function Header({ settings }: { settings: GlobalSettings }) {
                   <Link href={settings?.cta?.primaryHref || "/contact"}>
                     <MessageSquareText className="h-4 w-4" />
                     {settings?.cta?.primaryLabel || "Talk to an Advisor"}
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowBadge />
                   </Link>
                 </Button>
                 <a

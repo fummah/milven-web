@@ -1,8 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ArrowBadge } from "@/components/ArrowBadge"
 import { Reveal } from "@/components/motion/Reveal"
 import { track } from "@/lib/analytics"
 
@@ -43,7 +43,7 @@ export function CtaBand({
                     onClick={() => track("cta_click", { placement: "cta_band", href: primaryHref })}
                   >
                     {primaryLabel}
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowBadge />
                   </Link>
                 </Button>
                 {secondaryLabel && secondaryHref && (
