@@ -106,8 +106,15 @@ export function HomeHero({
           showDots={false}
           imgClassName="object-[72%_center]"
         />
-        {/* readable overlays: cream on the left, clear on the right, soft cream at the bottom */}
-        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/80 to-transparent" />
+        {/* readable overlays (mobile): solid cream on the left for the text,
+            fading to fully clear on the right so the image is crisp there */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, #F7F5EF 0%, #F7F5EF 60%, rgba(247,245,239,0.85) 72%, rgba(247,245,239,0) 90%)"
+          }}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-cream/85 via-transparent to-transparent" />
         {/* subtle gold arc, top-right */}
         <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full border-2 border-gold-400/50" />
@@ -140,7 +147,7 @@ export function HomeHero({
             })}
           </h1>
 
-          <p className="mt-5 max-w-[78%] text-[0.95rem] leading-7 text-slate-700">
+          <p className="mt-5 max-w-[72%] text-[0.95rem] leading-7 text-slate-700">
             {text}
           </p>
 
