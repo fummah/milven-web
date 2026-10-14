@@ -28,6 +28,8 @@ import {
   Linkedin,
   Twitter,
   Facebook,
+  Instagram,
+  Youtube,
   Mail,
   MapPin,
   Phone,
@@ -36,11 +38,23 @@ import {
   BadgeCheck,
   Scale,
   ClipboardList,
-  BookOpen,
-  type LucideIcon
+  BookOpen
 } from "lucide-react"
 
-const map: Record<string, LucideIcon> = {
+function TikTok({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M16.6 5.82A4.28 4.28 0 0 0 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.2 0 .5 0 .7.1v-3.2a5.9 5.9 0 0 0-.7-.05A5.8 5.8 0 1 0 15.5 15.5V9.9a7.3 7.3 0 0 0 4.2 1.3V8.05a4.3 4.3 0 0 1-3.1-2.23Z" />
+    </svg>
+  )
+}
+
+const map: Record<string, React.ComponentType<{ className?: string }>> = {
   compass: Compass,
   workflow: Workflow,
   "graduation-cap": GraduationCap,
@@ -70,6 +84,9 @@ const map: Record<string, LucideIcon> = {
   linkedin: Linkedin,
   twitter: Twitter,
   facebook: Facebook,
+  instagram: Instagram,
+  youtube: Youtube,
+  tiktok: TikTok,
   mail: Mail,
   "map-pin": MapPin,
   phone: Phone,

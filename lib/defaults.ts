@@ -66,7 +66,15 @@ export const defaultSettings: GlobalSettings = {
         ]
       }
     ],
-    socials: [],
+    socials: [
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/milven-consulting-services", icon: "linkedin" },
+      { label: "Facebook", href: "https://www.facebook.com/milvenconsulting", icon: "facebook" },
+      { label: "Instagram", href: "https://www.instagram.com/milvenconsulting", icon: "instagram" },
+      { label: "X", href: "https://x.com/milvenconsulting", icon: "twitter" },
+      { label: "YouTube", href: "https://www.youtube.com/@milvenconsulting", icon: "youtube" },
+      { label: "TikTok", href: "https://www.tiktok.com/@milvenconsulting", icon: "tiktok" },
+      { label: "Milven Academy", href: "https://www.instagram.com/milvenacademy", icon: "instagram" }
+    ],
     legal: [
       { label: "Privacy", href: "/privacy" },
       { label: "Terms", href: "/terms" },
