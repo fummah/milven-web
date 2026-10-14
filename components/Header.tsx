@@ -64,12 +64,12 @@ export function Header({ settings }: { settings: GlobalSettings }) {
           <Image
             src={brand?.logo || "/images/brand/milven-logo.png"}
             alt={brand?.name || "Milven Consulting Services"}
-            width={150}
-            height={31}
+            width={180}
+            height={37}
             priority
             className={cn(
               "w-auto transition-all duration-300",
-              scrolled ? "h-8" : "h-9"
+              scrolled ? "h-10" : "h-11"
             )}
           />
         </Link>
@@ -183,9 +183,9 @@ export function Header({ settings }: { settings: GlobalSettings }) {
                 <Image
                   src={brand?.logoWhite || "/images/brand/milven-logo-white.png"}
                   alt={brand?.name || "Milven"}
-                  width={140}
-                  height={29}
-                  className="h-8 w-auto"
+                  width={180}
+                  height={37}
+                  className="h-10 w-auto"
                 />
               </Link>
               <nav className="mt-8 flex flex-col gap-1 overflow-y-auto" aria-label="Mobile">

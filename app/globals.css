@@ -9,6 +9,17 @@
   --input: 210 20% 88%;
   --ring: 38 55% 53%;
   color-scheme: light;
+
+  /* Milven approved brand palette (Brand Guidelines v3.0) */
+  --brand-navy: #0d1b2a;
+  --brand-black: #0a0a0a;
+  --brand-gold: #c89d1e;
+  --brand-white: #ffffff;
+  --brand-silver: #6b7280;
+  --brand-grey: #f2f4f7;
+  /* Approved corporate type system */
+  --font-display: Georgia, "Times New Roman", serif;
+  --font-body: Arial, Helvetica, sans-serif;
 }
 
 @layer base {
@@ -58,7 +69,7 @@
   }
 
   .eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-label text-gold-600;
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-label text-navy-800;
   }
 
   .eyebrow-light {

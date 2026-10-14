@@ -20,9 +20,9 @@ export function Footer({ settings }: { settings: GlobalSettings }) {
             <Image
               src={brand?.logoWhite || "/images/brand/milven-logo-white.png"}
               alt={brand?.name || "Milven"}
-              width={170}
-              height={35}
-              className="h-9 w-auto"
+              width={180}
+              height={37}
+              className="h-10 w-auto"
             />
             <p className="mt-6 max-w-sm text-sm leading-7 text-white/60">
               {footer?.description || brand?.description}

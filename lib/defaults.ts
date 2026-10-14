@@ -5,7 +5,7 @@ export const defaultSettings: GlobalSettings = {
     name: "Milven Consulting Services",
     shortName: "Milven",
     tagline: "Better Decisions. Better Businesses. Better Leaders.",
-    descriptor: "Strategy. Transformation. Executive Capability.",
+    descriptor: "Financial & Business Solutions",
     description:
       "An African advisory firm combining strategy, finance, business transformation and executive development.",
     logo: "/images/brand/milven-logo.png",

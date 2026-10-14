@@ -11,7 +11,7 @@ export const seedGlobalSettings = {
     name: "Milven Consulting Services",
     shortName: "Milven",
     tagline: "Better Decisions. Better Businesses. Better Leaders.",
-    descriptor: "Strategy. Transformation. Executive Capability.",
+    descriptor: "Financial & Business Solutions",
     description:
       "An African advisory firm combining strategy, finance, business transformation and executive development to help organisations perform at their best.",
     logo: "/images/brand/milven-logo.png",
