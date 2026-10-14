@@ -3,9 +3,10 @@ import { PageHero } from "@/components/PageHero"
 
 export const metadata: Metadata = {
   title: "Terms of Use",
-  description: "Terms governing the use of the Milven Consulting Services website.",
+  description:
+    "The terms governing the use of the Milven Consulting Services website.",
   alternates: { canonical: "/terms" },
-  robots: { index: false, follow: true }
+  robots: { index: true, follow: true }
 }
 
 export default function TermsPage() {
@@ -21,25 +22,43 @@ export default function TermsPage() {
       />
       <section className="section">
         <div className="container-page max-w-3xl">
-          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
-            These terms are a placeholder. Final approved legal copy should be
-            reviewed and published before launch.
-          </div>
-          <div className="prose-milven mt-8">
+          <div className="prose-milven">
             <p>
-              The information on this website is provided for general purposes
-              only and does not constitute professional advice. Formal advice is
-              provided only under a signed engagement agreement.
+              The information on this website is provided for general information
+              purposes only.
             </p>
-            <h2>Use of this website</h2>
+
+            <h2>Professional advice</h2>
             <p>
-              You agree to use this website lawfully and not to misuse its
-              content or functionality.
+              Website content does not constitute investment, legal, tax, audit,
+              assurance or other regulated professional advice. Formal advisory
+              relationships arise only through separately agreed engagement terms.
             </p>
+
             <h2>Intellectual property</h2>
             <p>
-              All content, branding and materials on this website belong to
-              Milven Consulting Services unless otherwise stated.
+              All Milven branding, publications, graphics and website content remain
+              the property of Milven Consulting Services or the relevant rights
+              holder and may not be reproduced without permission.
+            </p>
+
+            <h2>Accuracy and availability</h2>
+            <p>
+              Milven aims to keep website information accurate and available but does
+              not guarantee that all content will always be complete, current or
+              uninterrupted.
+            </p>
+
+            <h2>External links</h2>
+            <p>
+              External links are provided for convenience only, and Milven is not
+              responsible for third-party websites.
+            </p>
+
+            <h2>Contact</h2>
+            <p>
+              For enquiries, contact{" "}
+              <a href="mailto:advisory@milven.co.zw">advisory@milven.co.zw</a>.
             </p>
           </div>
         </div>
