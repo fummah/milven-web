@@ -34,20 +34,15 @@ export default async function CompanyProfilePage() {
         <div className="pointer-events-none absolute inset-0 bg-grid-gold opacity-20 print:hidden" />
         <div className="container-page relative py-16 md:py-20">
           <div className="flex flex-wrap items-center justify-between gap-6">
-            <Image
-              src={s.brand.logoWhite}
-              alt={s.brand.name}
-              width={200}
-              height={41}
-              className="h-10 w-auto print:hidden"
-            />
-            <Image
-              src={s.brand.logo}
-              alt={s.brand.name}
-              width={200}
-              height={41}
-              className="hidden h-10 w-auto print:block"
-            />
+            <span className="inline-flex rounded-xl bg-white p-3">
+              <Image
+                src={s.brand.logo}
+                alt={s.brand.name}
+                width={241}
+                height={100}
+                className="h-12 w-auto"
+              />
+            </span>
             <div className="print:hidden">
               <PrintButton />
             </div>

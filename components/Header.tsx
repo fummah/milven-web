@@ -64,12 +64,12 @@ export function Header({ settings }: { settings: GlobalSettings }) {
           <Image
             src={brand?.logo || "/images/brand/milven-logo.png"}
             alt={brand?.name || "Milven Consulting Services"}
-            width={180}
-            height={37}
+            width={241}
+            height={100}
             priority
             className={cn(
               "w-auto transition-all duration-300",
-              scrolled ? "h-10" : "h-11"
+              scrolled ? "h-12" : "h-14"
             )}
           />
         </Link>
@@ -180,13 +180,15 @@ export function Header({ settings }: { settings: GlobalSettings }) {
             <SheetContent side="right" className="bg-navy-900">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
               <Link href="/" className="flex items-center">
-                <Image
-                  src={brand?.logoWhite || "/images/brand/milven-logo-white.png"}
-                  alt={brand?.name || "Milven"}
-                  width={180}
-                  height={37}
-                  className="h-10 w-auto"
-                />
+                <span className="inline-flex rounded-lg bg-white p-2">
+                  <Image
+                    src={brand?.logo || "/images/brand/milven-logo.png"}
+                    alt={brand?.name || "Milven"}
+                    width={241}
+                    height={100}
+                    className="h-10 w-auto"
+                  />
+                </span>
               </Link>
               <nav className="mt-8 flex flex-col gap-1 overflow-y-auto" aria-label="Mobile">
                 {settings?.nav?.map((item) => (

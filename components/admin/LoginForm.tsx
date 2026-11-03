@@ -44,13 +44,15 @@ export function LoginForm({ from }: { from: string }) {
       <div className="relative flex min-h-full items-center justify-center px-6 py-16">
         <div className="w-full max-w-md">
           <div className="mb-8 flex flex-col items-center text-center">
-            <Image
-              src="/images/brand/milven-logo-white.png"
-              alt="Milven"
-              width={180}
-              height={37}
-              className="h-9 w-auto"
-            />
+            <span className="inline-flex rounded-xl bg-white p-3">
+              <Image
+                src="/images/brand/milven-logo.png"
+                alt="Milven"
+                width={241}
+                height={100}
+                className="h-12 w-auto"
+              />
+            </span>
             <p className="mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-gold-400">
               <Lock className="h-3.5 w-3.5" />
               CMS Sign in

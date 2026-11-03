@@ -70,13 +70,15 @@ export function AdminNav() {
 export function AdminBrand() {
   return (
     <div className="flex items-center gap-3">
-      <Image
-        src="/images/brand/milven-logo-white.png"
-        alt="Milven"
-        width={130}
-        height={27}
-        className="h-7 w-auto"
-      />
+      <span className="inline-flex rounded-lg bg-white p-1.5">
+        <Image
+          src="/images/brand/milven-logo.png"
+          alt="Milven"
+          width={241}
+          height={100}
+          className="h-8 w-auto"
+        />
+      </span>
       <span className="rounded-full border border-gold-500/40 px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-gold-400">
         CMS
       </span>

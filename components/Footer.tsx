@@ -17,13 +17,15 @@ export function Footer({ settings }: { settings: GlobalSettings }) {
       <div className="container-page relative py-16 md:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr]">
           <div>
-            <Image
-              src={brand?.logoWhite || "/images/brand/milven-logo-white.png"}
-              alt={brand?.name || "Milven"}
-              width={180}
-              height={37}
-              className="h-10 w-auto"
-            />
+            <span className="inline-flex rounded-xl bg-white p-3">
+              <Image
+                src={brand?.logo || "/images/brand/milven-logo.png"}
+                alt={brand?.name || "Milven"}
+                width={241}
+                height={100}
+                className="h-14 w-auto"
+              />
+            </span>
             <p className="mt-6 max-w-sm text-sm leading-7 text-white/60">
               {footer?.description || brand?.description}
             </p>
