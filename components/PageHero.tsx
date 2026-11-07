@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 
@@ -5,19 +6,20 @@ import { cn } from "@/lib/utils"
  * Compact navy page header for interior pages.
  * A shallow navy strip directly beneath the navigation: optional gold label +
  * divider and a white serif page title, with content-driven height (no
- * viewport-height or oversized photo hero).
+ * viewport-height hero). An optional photo sits on the right with a navy
+ * gradient so it stays subtle and the title remains legible.
  */
 export function PageHero({
   eyebrow,
   title,
   text,
+  image,
   breadcrumbs,
   children
 }: {
   eyebrow?: string
   title: string
   text?: string | null
-  /** Kept for API compatibility with existing callers; not used (no photo hero). */
   image?: string | null
   breadcrumbs?: { label: string; href?: string }[]
   primary?: { label: string; href: string }
@@ -31,8 +33,23 @@ export function PageHero({
   const showLabel = Boolean(eyebrow) && e !== "" && !t.includes(e) && !e.includes(t)
 
   return (
-    <section className="border-b border-white/10 bg-navy-950 text-white">
-      <div className="container-page py-4 md:py-6">
+    <section className="relative overflow-hidden border-b border-white/10 bg-navy-950 text-white">
+      {image && (
+        <>
+          <Image
+            src={image}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-right opacity-50"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/80 to-navy-950/25" />
+          <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-transparent" />
+        </>
+      )}
+
+      <div className="container-page relative z-10 py-4 md:py-6">
         {breadcrumbs && breadcrumbs.length > 0 && (
           <nav
             aria-label="Breadcrumb"
@@ -70,7 +87,7 @@ export function PageHero({
         </h1>
 
         {text && (
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-white/65 md:text-base">
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-white/70 md:text-base">
             {text}
           </p>
         )}
@@ -80,3 +97,4 @@ export function PageHero({
     </section>
   )
 }
+
