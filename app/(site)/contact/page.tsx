@@ -1,9 +1,6 @@
 import type { Metadata } from "next"
-import { Suspense } from "react"
 import { Mail, MapPin } from "lucide-react"
-import { PageHero } from "@/components/PageHero"
 import { ContactForm } from "@/components/ContactForm"
-import { Reveal } from "@/components/motion/Reveal"
 import { getPage, getPageMetadata, getSettings } from "@/lib/site"
 import { defaultSettings } from "@/lib/defaults"
 
@@ -17,91 +14,100 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title, description, alternates: { canonical: "/contact" } }
 }
 
-export default async function ContactPage() {
+export default async function ContactPage({
+  searchParams
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}) {
   const [page, settings] = await Promise.all([getPage("contact"), getSettings()])
   const c = (page?.content || {}) as any
   const s = settings || defaultSettings
   const contact = s.contact
 
+  const sp = (await searchParams) || {}
+  const get = (k: string) => (typeof sp[k] === "string" ? (sp[k] as string) : "")
+  const service = get("service")
+  const programme = get("programme")
+  const industry = get("industry")
+  const intent = get("intent")
+  const message = programme
+    ? `I would like more information about the "${programme}" programme.`
+    : industry
+      ? `I would like to discuss support for the ${industry} sector.`
+      : intent === "proposal"
+        ? "I would like to request a formal proposal."
+        : ""
+
   return (
-    <main>
-      <PageHero
-        eyebrow={c.eyebrow || "Contact"}
-        title={page?.heroTitle || "Start a Conversation with Milven."}
-        text={page?.heroText}
-        image={page?.heroImage}
-        size="compact"
-        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
-      />
+    <main className="bg-cream">
+      <section className="py-10 md:py-16">
+        <div className="container-page">
+          <div className="grid overflow-hidden rounded-2xl border border-navy-100/70 bg-white shadow-premium lg:grid-cols-[0.85fr_1.55fr]">
+            {/* Left: navy information panel */}
+            <div className="relative bg-navy-950 p-8 text-white md:p-10">
+              <div className="pointer-events-none absolute inset-0 bg-grid-gold opacity-20" />
+              <div className="pointer-events-none absolute -bottom-16 -left-16 h-56 w-56 rounded-full border border-gold-500/15" />
 
-      <section className="section">
-        <div className="container-page grid gap-14 lg:grid-cols-[1.4fr_1fr]">
-          <Reveal>
-            <div>
-              <p className="eyebrow">
-                <span className="h-px w-8 bg-gold-500" />
-                {c.formTitle || "Send an Enquiry"}
-              </p>
-              <h2 className="mt-4 text-3xl text-navy-900 md:text-4xl">
-                Tell us how we can help.
-              </h2>
-              <div className="mt-9">
-                <Suspense fallback={<div className="h-96 animate-pulse rounded-2xl bg-cream" />}>
-                  <ContactForm />
-                </Suspense>
-              </div>
-            </div>
-          </Reveal>
+              <div className="relative">
+                <p className="eyebrow-light">
+                  <span className="h-px w-6 bg-gold-500" />
+                  {c.eyebrow || "Contact"}
+                </p>
+                <h1 className="mt-4 text-balance font-serif text-3xl leading-tight md:text-4xl">
+                  {page?.heroTitle || "Start a Conversation with Milven."}
+                </h1>
+                <span className="mt-5 block h-px w-16 bg-gold-500" />
 
-          <Reveal direction="left" delay={0.1}>
-            <aside className="space-y-6">
-              <div className="rounded-2xl bg-navy-900 p-8 text-white">
-                <h3 className="font-serif text-2xl">Our Office</h3>
-                <ul className="mt-6 space-y-5 text-sm">
-                  <li className="flex items-start gap-4">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 text-gold-400">
-                      <MapPin className="h-4 w-4" />
-                    </span>
-                    <span className="text-white/75">
-                      {contact.addressLines.map((l) => (
-                        <span key={l} className="block">
-                          {l}
-                        </span>
-                      ))}
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-4">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 text-gold-400">
-                      <Mail className="h-4 w-4" />
-                    </span>
-                    <a href={`mailto:${contact.email}`} className="text-white/75 hover:text-white">
-                      {contact.email}
-                    </a>
-                  </li>
-                </ul>
-                {contact.responseNote ? (
-                  <p className="mt-6 border-t border-white/10 pt-6 text-xs text-white/50">
-                    {contact.responseNote}
-                  </p>
-                ) : null}
-              </div>
+                <div className="mt-10">
+                  <h2 className="font-serif text-2xl text-white">Our Office</h2>
+                  <ul className="mt-5 space-y-4 text-sm">
+                    <li className="flex items-start gap-3">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/5 text-gold-400">
+                        <MapPin className="h-4 w-4" />
+                      </span>
+                      <span className="text-white/75">
+                        {contact.addressLines.map((l) => (
+                          <span key={l} className="block">
+                            {l}
+                          </span>
+                        ))}
+                      </span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/5 text-gold-400">
+                        <Mail className="h-4 w-4" />
+                      </span>
+                      <a
+                        href={`mailto:${contact.email}`}
+                        className="text-white/75 hover:text-white"
+                      >
+                        {contact.email}
+                      </a>
+                    </li>
+                  </ul>
 
-              <div className="relative overflow-hidden rounded-2xl border border-navy-100/70 bg-cream">
-                <div className="pointer-events-none absolute inset-0 bg-grid-gold opacity-60" />
-                <div className="relative flex aspect-[4/3] flex-col items-center justify-center p-8 text-center">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-navy-900 text-gold-400">
-                    <MapPin className="h-5 w-5" />
-                  </span>
-                  <p className="mt-4 font-serif text-xl text-navy-900">
-                    {contact.mapQuery}
-                  </p>
-                  <p className="mt-2 text-xs uppercase tracking-[0.18em] text-slate-400">
-                    Map placeholder
-                  </p>
+                  {contact.responseNote ? (
+                    <p className="mt-6 border-t border-white/10 pt-4 text-xs text-white/50">
+                      {contact.responseNote}
+                    </p>
+                  ) : null}
                 </div>
               </div>
-            </aside>
-          </Reveal>
+            </div>
+
+            {/* Right: enquiry form */}
+            <div className="p-6 md:p-10">
+              <h2 className="font-serif text-2xl text-navy-900">
+                {c.formTitle || "Send an Enquiry"}
+              </h2>
+              <p className="mt-1 text-sm text-slate-500">
+                Tell us about your requirement and we will be in touch.
+              </p>
+              <div className="mt-6">
+                <ContactForm prefill={{ service, message }} />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>

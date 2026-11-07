@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
@@ -13,8 +12,11 @@ import { Label } from "@/components/ui/label"
 import { contactSchema, type ContactInput, SERVICE_TYPES, CONTACT_METHODS } from "@/lib/validations"
 import { track } from "@/lib/analytics"
 
-export function ContactForm() {
-  const params = useSearchParams()
+export function ContactForm({
+  prefill
+}: {
+  prefill?: { service?: string; message?: string }
+}) {
   const [submitted, setSubmitted] = React.useState(false)
   const started = React.useRef(false)
 
@@ -37,14 +39,8 @@ export function ContactForm() {
       role: "",
       email: "",
       telephone: "",
-      service: params.get("service") || "",
-      message: params.get("programme")
-        ? `I would like more information about the "${params.get("programme")}" programme.`
-        : params.get("industry")
-          ? `I would like to discuss support for the ${params.get("industry")} sector.`
-          : params.get("intent") === "proposal"
-            ? "I would like to request a formal proposal."
-            : "",
+      service: prefill?.service || "",
+      message: prefill?.message || "",
       preferredMethod: "Email",
       honeypot: ""
     }
