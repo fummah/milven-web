@@ -13,7 +13,7 @@ export const seedGlobalSettings = {
     tagline: "Better Decisions. Better Businesses. Better Leaders.",
     descriptor: "Financial & Business Solutions",
     description:
-      "An African advisory firm combining strategy, finance, business transformation and executive development to help organisations perform at their best.",
+      "An advisory firm combining strategy, finance, business transformation and executive development to help organisations perform at their best.",
     logo: "/images/brand/milven-logo.png",
     logoWhite: "/images/brand/milven-logo-white.png"
   },
@@ -39,6 +39,11 @@ export const seedGlobalSettings = {
           label: "Business Systems & Transformation",
           href: "/services/business-systems-transformation",
           text: "Smarter systems. Scalable businesses."
+        },
+        {
+          label: "Milven Executive Finance Academy",
+          href: "/academy",
+          text: "Developing financially intelligent leaders."
         }
       ]
     },
@@ -111,7 +116,7 @@ export const seedPages: Record<string, any> = {
       "Milven Consulting Services combines strategy, finance, business transformation and executive development to help ambitious organisations perform at their best.",
     heroImage: "/images/home/hero-executive.jpg",
     content: {
-      eyebrow: "African Advisory & Transformation",
+      eyebrow: "Advisory & Transformation",
       signature:
         "We help organisations make better decisions, build better systems and develop better leaders.",
       heroImages: [
@@ -301,7 +306,7 @@ export const seedPages: Record<string, any> = {
 
   about: {
     title: "About",
-    seoTitle: "About Milven | A Trusted African Advisory Partner",
+    seoTitle: "About Milven | A Trusted Advisory Partner",
     seoDesc:
       "Milven Consulting Services is a professional advisory and business transformation firm helping organisations strengthen strategy, financial performance, business systems and executive capability.",
     heroTitle: "Advising Leaders. Transforming Businesses. Building Capability.",
@@ -313,7 +318,7 @@ export const seedPages: Record<string, any> = {
       intro:
         "Milven Consulting Services is a professional advisory and business transformation firm focused on helping organisations strengthen strategy, financial performance, operating systems and executive capability. We work with businesses, institutions, entrepreneurs and leadership teams facing growth, transformation, performance and execution challenges.",
       purpose: "To enable businesses and leaders to make better decisions, build stronger organisations and achieve sustainable performance.",
-      vision: "To become a trusted African advisory partner for organisations seeking strategic, financial and operational excellence.",
+      vision: "To become a trusted advisory partner for organisations seeking strategic, financial and operational excellence.",
       mission: "To provide high-quality advisory, transformation and executive-development solutions that create measurable business value.",
       values: [
         { title: "Integrity & Professional Judgement", text: "Independent, honest advice that puts your interests first.", icon: "shield-check" },

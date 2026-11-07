@@ -48,7 +48,7 @@ export default async function AboutPage() {
           <div>
             <SectionHeading
               eyebrow="Who We Are"
-              title="A trusted African advisory partner."
+              title="A trusted advisory partner."
               text={c.intro}
             />
           </div>

@@ -7,7 +7,7 @@ export const defaultSettings: GlobalSettings = {
     tagline: "Better Decisions. Better Businesses. Better Leaders.",
     descriptor: "Financial & Business Solutions",
     description:
-      "An African advisory firm combining strategy, finance, business transformation and executive development.",
+      "An advisory firm combining strategy, finance, business transformation and executive development.",
     logo: "/images/brand/milven-logo.png",
     logoWhite: "/images/brand/milven-logo-white.png"
   },
@@ -33,6 +33,11 @@ export const defaultSettings: GlobalSettings = {
           label: "Business Systems & Transformation",
           href: "/services/business-systems-transformation",
           text: "Smarter systems. Scalable businesses."
+        },
+        {
+          label: "Milven Executive Finance Academy",
+          href: "/academy",
+          text: "Developing financially intelligent leaders."
         }
       ]
     },

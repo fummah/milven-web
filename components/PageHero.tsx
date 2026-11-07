@@ -31,10 +31,10 @@ export function PageHero({
       className={cn(
         "relative flex items-center overflow-hidden bg-navy-950 text-white",
         size === "large"
-          ? "min-h-[88vh]"
+          ? "min-h-[60vh]"
           : size === "compact"
-            ? "min-h-[50vh]"
-            : "min-h-[68vh]"
+            ? "min-h-[30vh]"
+            : "min-h-[44vh]"
       )}
     >
       {image && (
@@ -70,10 +70,10 @@ export function PageHero({
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-transparent" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-navy-950/35 to-transparent" />
 
-      <div className="container-page relative py-24 md:py-32">
+      <div className="container-page relative py-14 md:py-20">
         <div className="max-w-3xl">
           {breadcrumbs && breadcrumbs.length > 0 && (
-            <nav aria-label="Breadcrumb" className="mb-6 flex flex-wrap items-center gap-2 text-xs text-white/50">
+            <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-2 text-xs text-white/50">
               {breadcrumbs.map((b, i) => (
                 <span key={b.label} className="flex items-center gap-2">
                   {b.href ? (
@@ -99,14 +99,14 @@ export function PageHero({
           )}
 
           <Reveal delay={0.05}>
-            <h1 className="text-balance text-4xl leading-[1.05] text-white sm:text-5xl md:text-[4.25rem]">
+            <h1 className="text-balance text-4xl leading-[1.05] text-white sm:text-5xl md:text-[3.5rem]">
               {title}
             </h1>
           </Reveal>
 
           {text && (
             <Reveal delay={0.12}>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-white/80">{text}</p>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-white/80 md:text-lg md:leading-8">{text}</p>
             </Reveal>
           )}
 

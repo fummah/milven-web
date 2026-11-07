@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
-import { Mail, MapPin, Clock } from "lucide-react"
+import { Mail, MapPin } from "lucide-react"
 import { PageHero } from "@/components/PageHero"
 import { ContactForm } from "@/components/ContactForm"
 import { Reveal } from "@/components/motion/Reveal"
@@ -77,14 +77,6 @@ export default async function ContactPage() {
                     <a href={`mailto:${contact.email}`} className="text-white/75 hover:text-white">
                       {contact.email}
                     </a>
-                  </li>
-                  <li className="flex items-start gap-4">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 text-gold-400">
-                      <Clock className="h-4 w-4" />
-                    </span>
-                    <span className="text-white/75">
-                      Monday – Friday, 08:00 – 17:00 (CAT)
-                    </span>
                   </li>
                 </ul>
                 {contact.responseNote ? (

@@ -46,7 +46,7 @@ export default async function Home() {
     <main>
       {/* HERO */}
       <HomeHero
-        eyebrow={content.eyebrow || "African Advisory & Transformation"}
+        eyebrow={content.eyebrow || "Advisory & Transformation"}
         title={
           page?.heroTitle ||
           "Better Decisions. Better Businesses. Better Leaders."
