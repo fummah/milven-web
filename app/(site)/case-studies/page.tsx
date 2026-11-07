@@ -23,7 +23,7 @@ export default async function CaseStudiesPage() {
     <main>
       <PageHero
         eyebrow="Case Studies"
-        title="Selected Engagements"
+        title="Case Studies"
         text="How Milven helps organisations make better decisions, build better systems and improve performance. Published with client permission."
         image="/images/insights/strategy.jpg"
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Case Studies" }]}

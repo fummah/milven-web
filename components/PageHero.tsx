@@ -1,24 +1,23 @@
-import Image from "next/image"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ArrowBadge } from "@/components/ArrowBadge"
-import { Reveal } from "@/components/motion/Reveal"
 import { cn } from "@/lib/utils"
 
+/**
+ * Compact navy page header for interior pages.
+ * A shallow navy strip directly beneath the navigation: optional gold label +
+ * divider and a white serif page title, with content-driven height (no
+ * viewport-height or oversized photo hero).
+ */
 export function PageHero({
   eyebrow,
   title,
   text,
-  image,
   breadcrumbs,
-  primary,
-  secondary,
-  size = "default",
   children
 }: {
   eyebrow?: string
   title: string
   text?: string | null
+  /** Kept for API compatibility with existing callers; not used (no photo hero). */
   image?: string | null
   breadcrumbs?: { label: string; href?: string }[]
   primary?: { label: string; href: string }
@@ -26,112 +25,57 @@ export function PageHero({
   size?: "default" | "large" | "compact"
   children?: React.ReactNode
 }) {
+  const norm = (s?: string) => (s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()
+  const t = norm(title)
+  const e = norm(eyebrow)
+  const showLabel = Boolean(eyebrow) && e !== "" && !t.includes(e) && !e.includes(t)
+
   return (
-    <section
-      className={cn(
-        "relative flex items-center overflow-hidden bg-navy-950 text-white",
-        size === "large"
-          ? "min-h-[60vh]"
-          : size === "compact"
-            ? "min-h-[30vh]"
-            : "min-h-[44vh]"
-      )}
-    >
-      {image && (
-        <Image
-          src={image}
-          alt={title}
-          fill
-          priority
-          sizes="100vw"
-          className="animate-hero-in object-cover object-center opacity-90"
-        />
-      )}
-
-      {/* left diagonal veil with gold + white hairline edges */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(104deg, rgba(6,23,46,0.90) 0%, rgba(6,23,46,0.78) 36%, rgba(255,255,255,0.14) 36.4%, rgba(6,23,46,0.62) 36.8%, rgba(6,23,46,0.52) 42%, rgba(217,174,95,0.65) 42.4%, rgba(10,35,66,0.22) 42.9%, rgba(6,23,46,0) 64%)"
-        }}
-      />
-
-      {/* bottom-left corner facet with hairline */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(72deg, rgba(6,23,46,0.66) 0%, rgba(6,23,46,0.42) 22%, rgba(217,174,95,0.42) 22.4%, rgba(6,23,46,0.16) 22.9%, rgba(6,23,46,0) 40%)"
-        }}
-      />
-
-      {/* depth + top-right vignette */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-navy-950/35 to-transparent" />
-
-      <div className="container-page relative py-14 md:py-20">
-        <div className="max-w-3xl">
-          {breadcrumbs && breadcrumbs.length > 0 && (
-            <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-2 text-xs text-white/50">
-              {breadcrumbs.map((b, i) => (
-                <span key={b.label} className="flex items-center gap-2">
-                  {b.href ? (
-                    <Link href={b.href} className="hover:text-gold-400">
-                      {b.label}
-                    </Link>
-                  ) : (
-                    <span className="text-white/80">{b.label}</span>
-                  )}
-                  {i < breadcrumbs.length - 1 && <span className="text-gold-500/60">/</span>}
-                </span>
-              ))}
-            </nav>
-          )}
-
-          {eyebrow && (
-            <Reveal>
-              <p className="eyebrow-light mb-5">
-                <span className="h-px w-8 bg-gold-500" />
-                {eyebrow}
-              </p>
-            </Reveal>
-          )}
-
-          <Reveal delay={0.05}>
-            <h1 className="text-balance text-4xl leading-[1.05] text-white sm:text-5xl md:text-[3.5rem]">
-              {title}
-            </h1>
-          </Reveal>
-
-          {text && (
-            <Reveal delay={0.12}>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-white/80 md:text-lg md:leading-8">{text}</p>
-            </Reveal>
-          )}
-
-          {(primary || secondary) && (
-            <Reveal delay={0.18}>
-              <div className="mt-9 flex flex-wrap gap-3">
-                {primary && (
-                  <Button asChild variant="primary" size="lg">
-                    <Link href={primary.href}>
-                      {primary.label}
-                      <ArrowBadge />
-                    </Link>
-                  </Button>
+    <section className="border-b border-white/10 bg-navy-950 text-white">
+      <div className="container-page py-4 md:py-6">
+        {breadcrumbs && breadcrumbs.length > 0 && (
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-2 flex flex-wrap items-center gap-2 text-[0.7rem] text-white/45"
+          >
+            {breadcrumbs.map((b, i) => (
+              <span key={b.label} className="flex items-center gap-2">
+                {b.href ? (
+                  <Link href={b.href} className="hover:text-gold-400">
+                    {b.label}
+                  </Link>
+                ) : (
+                  <span className="text-white/70">{b.label}</span>
                 )}
-                {secondary && (
-                  <Button asChild variant="light" size="lg">
-                    <Link href={secondary.href}>{secondary.label}</Link>
-                  </Button>
+                {i < breadcrumbs.length - 1 && (
+                  <span className="text-gold-500/60">/</span>
                 )}
-              </div>
-            </Reveal>
-          )}
+              </span>
+            ))}
+          </nav>
+        )}
 
-          {children}
-        </div>
+        {showLabel && (
+          <div className="mb-2">
+            <p className="eyebrow-light">
+              <span className="h-px w-6 bg-gold-500" />
+              {eyebrow}
+            </p>
+            <span className="mt-2 block h-px w-14 bg-gold-500/70" />
+          </div>
+        )}
+
+        <h1 className={cn("text-balance font-serif text-3xl leading-tight text-white md:text-4xl")}>
+          {title}
+        </h1>
+
+        {text && (
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-white/65 md:text-base">
+            {text}
+          </p>
+        )}
+
+        {children}
       </div>
     </section>
   )

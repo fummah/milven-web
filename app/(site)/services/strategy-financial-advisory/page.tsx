@@ -52,8 +52,8 @@ export default async function AdvisoryPage() {
     <main>
       <PageHero
         eyebrow={c.eyebrow || "Strategy & Financial Advisory"}
-        title={page?.heroTitle || "Turning Financial Insight Into Better Business Decisions."}
-        text={page?.heroText}
+        title="Strategy & Financial Advisory"
+        text={page?.heroTitle || page?.heroText}
         image={page?.heroImage}
         breadcrumbs={[
           { label: "Home", href: "/" },

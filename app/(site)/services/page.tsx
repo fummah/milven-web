@@ -28,7 +28,7 @@ export default async function ServicesPage() {
     <main>
       <PageHero
         eyebrow={content.eyebrow || "What We Do"}
-        title={page?.heroTitle || "Our Services"}
+        title="Services"
         text={page?.heroText}
         image={page?.heroImage}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Services" }]}

@@ -49,8 +49,8 @@ export default async function SystemsPage() {
     <main>
       <PageHero
         eyebrow={c.eyebrow || "Business Systems & Transformation"}
-        title={page?.heroTitle || "Building Smarter, More Efficient Businesses."}
-        text={page?.heroText}
+        title="Business Systems & Transformation"
+        text={page?.heroTitle || page?.heroText}
         image={page?.heroImage}
         breadcrumbs={[
           { label: "Home", href: "/" },

@@ -32,7 +32,7 @@ export default async function InsightsPage() {
     <main>
       <PageHero
         eyebrow={c.eyebrow || "Insights & Resources"}
-        title={page?.heroTitle || "Insights"}
+        title="Insights"
         text={page?.heroText}
         image={page?.heroImage}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Insights" }]}

@@ -27,8 +27,8 @@ export default async function IndustriesPage() {
     <main>
       <PageHero
         eyebrow={c.eyebrow || "Industries We Serve"}
-        title={page?.heroTitle || "We Serve Diverse Industries"}
-        text={page?.heroText}
+        title="Industries"
+        text={page?.heroTitle || page?.heroText}
         image={page?.heroImage}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Industries" }]}
       />

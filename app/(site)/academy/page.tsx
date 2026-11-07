@@ -33,8 +33,8 @@ export default async function AcademyPage() {
     <main>
       <PageHero
         eyebrow={c.eyebrow || "Executive Education"}
-        title={page?.heroTitle || "Milven Executive Finance Academy"}
-        text={page?.heroText}
+        title="Executive Finance Academy"
+        text={page?.heroTitle || page?.heroText}
         image={page?.heroImage}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Executive Finance Academy" }]}
       />

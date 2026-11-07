@@ -36,7 +36,7 @@ export default async function AboutPage() {
     <main>
       <PageHero
         eyebrow={c.eyebrow || "About Milven"}
-        title={page?.heroTitle || "Advising Leaders. Transforming Businesses. Building Capability."}
+        title="About Milven"
         text={page?.heroText}
         image={page?.heroImage}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "About" }]}
