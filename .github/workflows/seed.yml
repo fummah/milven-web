@@ -1,0 +1,21 @@
+name: Seed production database
+
+on:
+  workflow_dispatch:
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run seed on the server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          command_timeout: 20m
+          script: |
+            set -e
+            cd /opt/milven-website
+            docker compose -f docker-compose.prod.yml run --rm web npx tsx prisma/seed.ts
