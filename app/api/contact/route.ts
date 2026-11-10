@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { sendContactEmail } from "@/lib/mail"
+import { notifyEnquiry, sendAcknowledgement } from "@/lib/email/service"
 import { forwardToCrm } from "@/lib/crm"
 import { contactSchema } from "@/lib/validations"
 
@@ -68,17 +69,61 @@ export async function POST(req: Request) {
   let emailed = false
   let emailError: string | null = null
   try {
-    emailed = await sendContactEmail({
-      name: data.name,
-      email: data.email,
-      organisation: data.organisation || undefined,
-      role: data.role || undefined,
-      telephone: data.telephone || undefined,
-      service: data.service || undefined,
-      message: data.message,
-      preferredMethod: data.preferredMethod || undefined
+    const result = await notifyEnquiry({
+      type: "contact_enquiry",
+      submissionRef: `contact:${saved.id}`,
+      visitorEmail: data.email,
+      vars: {
+        name: data.name,
+        email: data.email,
+        phone: data.telephone || "",
+        organisation: data.organisation || "",
+        service: data.service || "",
+        preferredMethod: data.preferredMethod || "",
+        message: data.message,
+        date: new Date().toLocaleString("en-GB", {
+          dateStyle: "medium",
+          timeStyle: "short"
+        }),
+        source: "Milven Consulting Website"
+      },
+      details: [
+        ["Name", data.name],
+        ["Email", data.email],
+        ["Phone", data.telephone || ""],
+        ["Organisation", data.organisation || ""],
+        ["Role", data.role || ""],
+        ["Service", data.service || ""],
+        ["Preferred contact", data.preferredMethod || ""]
+      ]
     })
-    if (!emailed) emailError = "Email not sent (configuration missing or delivery failed)"
+
+    if (result.ok) {
+      emailed = true
+    } else if (result.skipped && process.env.RESEND_API_KEY) {
+      // Fallback to the legacy Resend pipeline when Graph is not enabled.
+      emailed = await sendContactEmail({
+        name: data.name,
+        email: data.email,
+        organisation: data.organisation || undefined,
+        role: data.role || undefined,
+        telephone: data.telephone || undefined,
+        service: data.service || undefined,
+        message: data.message,
+        preferredMethod: data.preferredMethod || undefined
+      })
+      if (!emailed) emailError = "Email not sent (delivery failed)"
+    } else {
+      emailError = result.error || "Email not sent (configuration missing or delivery failed)"
+    }
+
+    if (emailed) {
+      await sendAcknowledgement({
+        submissionRef: `contact:${saved.id}`,
+        to: data.email,
+        vars: { name: data.name }
+      }).catch(() => undefined)
+    }
   } catch (error) {
     emailError = error instanceof Error ? error.message : "Unknown email error"
     console.error("Contact email failed (submission saved):", error)

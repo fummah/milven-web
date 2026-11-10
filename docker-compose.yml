@@ -21,6 +21,7 @@ services:
       RESEND_API_KEY: ${RESEND_API_KEY}
       CONTACT_TO_EMAIL: advisory@milven.co.zw
       CONTACT_FROM_EMAIL: ${CONTACT_FROM_EMAIL}
+      EMAIL_SECRET_KEY: ${EMAIL_SECRET_KEY:-}
     volumes:
       - uploads:/app/public/uploads
     depends_on:

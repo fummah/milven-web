@@ -162,3 +162,43 @@ model ChecklistItem {
   order     Int      @default(0)
   updatedAt DateTime @updatedAt
 }
+
+model EmailConfiguration {
+  id                     String    @id @default("global")
+  provider               String    @default("microsoft_graph")
+  tenantId               String?
+  clientId               String?
+  clientSecretEnc        String?
+  senderEmail            String    @default("advisory@milven.co.zw")
+  senderName             String    @default("Milven Consulting")
+  recipients             Json      @default("[]")
+  replyToBehaviour       String    @default("visitor")
+  enabled                Boolean   @default(false)
+  acknowledgementsEnabled Boolean  @default(false)
+  lastSuccessAt          DateTime?
+  lastFailureAt          DateTime?
+  lastError              String?
+  updatedAt              DateTime  @updatedAt
+}
+
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  type      String   @unique
+  subject   String
+  htmlBody  String
+  textBody  String
+  enabled   Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}
+
+model EmailDeliveryLog {
+  id            String   @id @default(cuid())
+  submissionRef String?
+  templateType  String
+  recipient     String
+  status        String   @default("PENDING")
+  attempts      Int      @default(0)
+  lastError     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

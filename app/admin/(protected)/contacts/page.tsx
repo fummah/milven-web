@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma"
 import { ContactsManager } from "@/components/admin/ContactsManager"
+import { getEmailConfig } from "@/lib/email/config"
 import { MailWarning, MailCheck } from "lucide-react"
+import Link from "next/link"
 
 export const dynamic = "force-dynamic"
 
@@ -13,8 +15,11 @@ export default async function AdminContacts() {
     createdAt: r.createdAt.toISOString()
   }))
 
-  const emailConfigured = Boolean(process.env.RESEND_API_KEY)
-  const inbox = process.env.CONTACT_TO_EMAIL || "advisory@milven.co.zw"
+  const cfg = await getEmailConfig()
+  const graphActive = cfg.enabled && Boolean(cfg.tenantId && cfg.clientId && cfg.clientSecret)
+  const emailConfigured = graphActive || Boolean(process.env.RESEND_API_KEY)
+  const inbox = cfg.recipients[0] || process.env.CONTACT_TO_EMAIL || "advisory@milven.co.zw"
+  const channel = graphActive ? "Microsoft 365 (Graph)" : "Resend"
 
   return (
     <div className="grid gap-8">
@@ -39,15 +44,18 @@ export default async function AdminContacts() {
         )}
         {emailConfigured ? (
           <span>
-            Email delivery is active. New enquiries are emailed to{" "}
+            Email delivery is active via <strong>{channel}</strong>. New enquiries are emailed to{" "}
             <strong>{inbox}</strong> and saved here.
           </span>
         ) : (
           <span>
             Email delivery is not configured yet. Enquiries are still saved here.
-            Add <strong>RESEND_API_KEY</strong>, <strong>CONTACT_FROM_EMAIL</strong>{" "}
-            and <strong>CONTACT_TO_EMAIL</strong> to your environment to email
-            enquiries to <strong>{inbox}</strong>.
+            Configure Microsoft 365 in{" "}
+            <Link href="/admin/email" className="font-semibold underline">
+              Email Configuration
+            </Link>{" "}
+            (or set <strong>RESEND_API_KEY</strong>) to email enquiries to{" "}
+            <strong>{inbox}</strong>.
           </span>
         )}
       </div>

@@ -12,6 +12,7 @@ import {
   Newspaper,
   Images,
   Mail,
+  MailCheck,
   Settings,
   FolderKanban,
   Users,
@@ -33,6 +34,7 @@ const items = [
   { label: "Team", href: "/admin/team", icon: Users },
   { label: "Media", href: "/admin/media", icon: Images },
   { label: "Contacts", href: "/admin/contacts", icon: Mail },
+  { label: "Email", href: "/admin/email", icon: MailCheck },
   { label: "Redirects", href: "/admin/redirects", icon: Share2 },
   { label: "Site Settings", href: "/admin/settings", icon: Settings }
 ]
