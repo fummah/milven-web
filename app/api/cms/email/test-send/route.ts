@@ -18,5 +18,13 @@ export async function POST(req: Request) {
   }
 
   const result = await sendTestEmail(to)
-  return NextResponse.json({ ...result, to })
+  return NextResponse.json({
+    ok: result.ok,
+    status: result.status,
+    error: result.error,
+    code: result.code,
+    accepted: result.accepted,
+    attempts: result.attempts,
+    to
+  })
 }

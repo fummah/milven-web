@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { guardApi } from "@/lib/auth"
 import { getPublicEmailConfig, normalizeRecipients } from "@/lib/email/config"
+import { clearGraphTokenCache } from "@/lib/email/graph"
 import { encryptSecret } from "@/lib/crypto"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -59,6 +60,9 @@ export async function PUT(req: Request) {
     update: data as any,
     create: { id: "global", ...data } as any
   })
+
+  // Credentials may have changed; discard any cached Graph token.
+  clearGraphTokenCache()
 
   return NextResponse.json(await getPublicEmailConfig())
 }

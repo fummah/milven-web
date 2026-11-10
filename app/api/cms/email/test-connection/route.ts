@@ -11,6 +11,10 @@ export async function POST() {
   const cfg = await getEmailConfig()
   const result = await testGraphConnection(cfg)
 
+  if (result.detail) {
+    console.error("[email/test-connection]", result.detail)
+  }
+
   await prisma.emailConfiguration
     .update({
       where: { id: "global" },
@@ -20,5 +24,15 @@ export async function POST() {
     })
     .catch(() => undefined)
 
-  return NextResponse.json(result)
+  // Only safe, concise fields reach the browser.
+  return NextResponse.json({
+    ok: result.ok,
+    status: result.status,
+    error: result.error,
+    code: result.code,
+    tokenAcquired: result.tokenAcquired,
+    graphAudience: result.graphAudience,
+    hasMailSend: result.hasMailSend,
+    attempts: result.attempts
+  })
 }

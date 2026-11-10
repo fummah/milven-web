@@ -122,6 +122,11 @@ export function EmailManager({
   )
   const [saving, setSaving] = React.useState(false)
   const [testing, setTesting] = React.useState(false)
+  const [connection, setConnection] = React.useState<{
+    tokenAcquired: boolean
+    graphAudience: boolean
+    hasMailSend: boolean
+  } | null>(null)
   const [testEmail, setTestEmail] = React.useState(initialConfig.recipients[0] || initialConfig.senderEmail)
   const [sendingTest, setSendingTest] = React.useState(false)
 
@@ -182,8 +187,18 @@ export function EmailManager({
     try {
       const res = await fetch("/api/cms/email/test-connection", { method: "POST" })
       const data = await res.json()
+      setConnection({
+        tokenAcquired: Boolean(data.tokenAcquired),
+        graphAudience: Boolean(data.graphAudience),
+        hasMailSend: Boolean(data.hasMailSend)
+      })
       if (data.ok) {
-        toast.success("Microsoft Graph connection successful")
+        toast.success("Connected to Microsoft Graph. Mail.Send permission detected.")
+      } else if (data.tokenAcquired && data.graphAudience && !data.hasMailSend) {
+        toast.error(
+          data.error ||
+            "Connected to Microsoft Graph, but the Mail.Send application role is not present."
+        )
       } else {
         toast.error(data.error || "Connection failed")
       }
@@ -322,6 +337,10 @@ export function EmailManager({
             <p className="mt-1 text-sm text-slate-500">
               Application credentials are encrypted at rest. The client secret is never displayed.
             </p>
+            <p className="mt-1 text-xs text-slate-400">
+              Test connection validates OAuth and the Mail.Send role only — it never sends email.
+              Use Send test email to verify actual delivery.
+            </p>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={testConnection} disabled={testing}>
@@ -334,6 +353,41 @@ export function EmailManager({
             </Button>
           </div>
         </div>
+
+        {connection ? (
+          <div className="mb-5 flex flex-wrap items-center gap-2 text-xs">
+            <span
+              className={cn(
+                "rounded-full px-2.5 py-1 font-semibold",
+                connection.tokenAcquired
+                  ? "bg-emerald-500/10 text-emerald-700"
+                  : "bg-red-500/10 text-red-700"
+              )}
+            >
+              OAuth {connection.tokenAcquired ? "connected" : "failed"}
+            </span>
+            <span
+              className={cn(
+                "rounded-full px-2.5 py-1 font-semibold",
+                connection.graphAudience
+                  ? "bg-emerald-500/10 text-emerald-700"
+                  : "bg-red-500/10 text-red-700"
+              )}
+            >
+              Graph audience {connection.graphAudience ? "valid" : "invalid"}
+            </span>
+            <span
+              className={cn(
+                "rounded-full px-2.5 py-1 font-semibold",
+                connection.hasMailSend
+                  ? "bg-emerald-500/10 text-emerald-700"
+                  : "bg-gold-500/15 text-gold-700"
+              )}
+            >
+              Mail.Send {connection.hasMailSend ? "detected" : "missing"}
+            </span>
+          </div>
+        ) : null}
 
         <div className="grid gap-4 md:grid-cols-2">
           <Field label="Directory (tenant) ID">

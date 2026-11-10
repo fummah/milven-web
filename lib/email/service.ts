@@ -13,6 +13,8 @@ export interface SendResult {
   skipped?: boolean
   status?: number
   error?: string
+  code?: string
+  accepted?: boolean
   attempts?: number
 }
 
@@ -109,7 +111,8 @@ export async function sendTemplateEmail(opts: {
       data: {
         status: result.ok ? "ACCEPTED" : "FAILED",
         attempts: result.attempts,
-        lastError: result.ok ? null : (result.error || "").slice(0, 500)
+        // Technical summary (HTTP status, Graph code, request id) for admins.
+        lastError: result.ok ? null : (result.technical || result.error || "").slice(0, 500)
       }
     })
     .catch(() => undefined)
@@ -127,6 +130,8 @@ export async function sendTemplateEmail(opts: {
     ok: result.ok,
     status: result.status,
     error: result.error,
+    code: result.code,
+    accepted: result.accepted,
     attempts: result.attempts
   }
 }
