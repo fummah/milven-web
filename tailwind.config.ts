@@ -55,6 +55,15 @@ const config: Config = {
           silver: "#6B7280",
           grey: "#F2F4F7"
         },
+        cms: {
+          bg: "#F6F8FB",
+          surface: "#FFFFFF",
+          border: "#E2E8F0",
+          text: "#334155",
+          muted: "#64748B",
+          active: "#EAF0F8",
+          navy: "#173452"
+        },
         cream: {
           DEFAULT: "#F7F5EF",
           dark: "#EFEbE0"

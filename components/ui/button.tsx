@@ -12,6 +12,10 @@ const buttonVariants = cva(
           "bg-gradient-to-b from-gold-400 to-gold-500 text-navy-900 shadow-gold hover:from-gold-300 hover:to-gold-400 hover:-translate-y-0.5 hover:shadow-[0_22px_48px_-16px_rgba(200,154,69,0.75)]",
         navy:
           "bg-navy-800 text-white hover:bg-navy-700 hover:-translate-y-0.5 shadow-premium",
+        cms:
+          "bg-cms-navy text-white shadow-sm hover:bg-[#0F2A45] focus-visible:ring-gold-500/50",
+        cmsOutline:
+          "border border-cms-border bg-white text-cms-text hover:border-cms-navy/30 hover:bg-cms-active hover:text-cms-navy",
         outline:
           "border border-navy-900 bg-transparent text-navy-900 hover:border-navy-900 hover:bg-navy-900 hover:text-white",
         goldOutline:

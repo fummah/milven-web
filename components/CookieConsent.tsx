@@ -3,12 +3,14 @@
 import * as React from "react"
 import Script from "next/script"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 const KEY = "milven-consent"
 
 export function CookieConsent() {
+  const pathname = usePathname()
   const [consent, setConsent] = React.useState<string | null>(null)
   const [ready, setReady] = React.useState(false)
 
@@ -29,6 +31,8 @@ export function CookieConsent() {
     }
     setConsent(value)
   }
+
+  if (pathname?.startsWith("/admin")) return null
 
   return (
     <>

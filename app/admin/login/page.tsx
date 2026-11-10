@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 export default async function LoginPage({
   searchParams
 }: {
-  searchParams: Promise<{ from?: string }>
+  searchParams: Promise<{ from?: string; expired?: string }>
 }) {
-  const { from } = await searchParams
-  return <LoginForm from={from || "/admin"} />
+  const { from, expired } = await searchParams
+  return <LoginForm from={from || "/admin"} expired={expired === "1"} />
 }

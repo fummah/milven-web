@@ -2,9 +2,16 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { LogOut } from "lucide-react"
+import { Loader2, LogOut } from "lucide-react"
+import { cn } from "@/lib/utils"
 
-export function LogoutButton() {
+export function LogoutButton({
+  collapsed = false,
+  className
+}: {
+  collapsed?: boolean
+  className?: string
+}) {
   const router = useRouter()
   const [loading, setLoading] = React.useState(false)
 
@@ -17,12 +24,23 @@ export function LogoutButton() {
 
   return (
     <button
+      type="button"
       onClick={logout}
       disabled={loading}
-      className="flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm text-white/70 transition-colors hover:bg-white/5 hover:text-white disabled:opacity-50"
+      title={collapsed ? "Sign out" : undefined}
+      aria-label="Sign out"
+      className={cn(
+        "flex items-center rounded-xl border border-cms-border text-sm font-medium text-cms-text transition-colors hover:bg-cms-active hover:text-cms-navy disabled:opacity-50",
+        collapsed ? "justify-center px-0 py-2.5" : "gap-2 px-3 py-2.5",
+        className
+      )}
     >
-      <LogOut className="h-4 w-4" />
-      {loading ? "Signing out..." : "Sign out"}
+      {loading ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <LogOut className="h-4 w-4 text-cms-muted" />
+      )}
+      {!collapsed && <span>{loading ? "Signing out..." : "Sign out"}</span>}
     </button>
   )
 }

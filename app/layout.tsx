@@ -5,6 +5,7 @@ import { Toaster } from "sonner"
 import { Header } from "@/components/Header"
 import { Footer } from "@/components/Footer"
 import { TopBanner } from "@/components/TopBanner"
+import { SiteChrome } from "@/components/SiteChrome"
 import { ChatWidget } from "@/components/ChatWidget"
 import { CookieConsent } from "@/components/CookieConsent"
 import { SmoothScroll } from "@/components/SmoothScroll"
@@ -90,10 +91,13 @@ export default async function RootLayout({
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body className="min-h-screen bg-white">
         <SmoothScroll />
-        <TopBanner settings={settings} />
-        <Header settings={settings} />
-        {children}
-        <Footer settings={settings} />
+        <SiteChrome
+          topBanner={<TopBanner settings={settings} />}
+          header={<Header settings={settings} />}
+          footer={<Footer settings={settings} />}
+        >
+          {children}
+        </SiteChrome>
         <ChatWidget />
         <CookieConsent />
         <Toaster

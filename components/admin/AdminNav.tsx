@@ -18,85 +18,162 @@ import {
   Users,
   ClipboardList,
   Share2,
-  ExternalLink
+  ExternalLink,
+  type LucideIcon
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-const items = [
-  { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Pages", href: "/admin/pages", icon: FileText },
-  { label: "Services", href: "/admin/services", icon: Compass },
-  { label: "Academy", href: "/admin/academy", icon: GraduationCap },
-  { label: "Academy Enquiries", href: "/admin/training", icon: ClipboardList },
-  { label: "Industries", href: "/admin/industries", icon: Building2 },
-  { label: "Insights", href: "/admin/insights", icon: Newspaper },
-  { label: "Case Studies", href: "/admin/case-studies", icon: FolderKanban },
-  { label: "Team", href: "/admin/team", icon: Users },
-  { label: "Media", href: "/admin/media", icon: Images },
-  { label: "Contacts", href: "/admin/contacts", icon: Mail },
-  { label: "Email", href: "/admin/email", icon: MailCheck },
-  { label: "Redirects", href: "/admin/redirects", icon: Share2 },
-  { label: "Site Settings", href: "/admin/settings", icon: Settings }
+interface NavItem {
+  label: string
+  href: string
+  icon: LucideIcon
+}
+
+interface NavGroup {
+  label: string
+  items: NavItem[]
+}
+
+const groups: NavGroup[] = [
+  {
+    label: "Overview",
+    items: [{ label: "Dashboard", href: "/admin", icon: LayoutDashboard }]
+  },
+  {
+    label: "Content",
+    items: [
+      { label: "Website Pages", href: "/admin/pages", icon: FileText },
+      { label: "Services", href: "/admin/services", icon: Compass },
+      { label: "Academy", href: "/admin/academy", icon: GraduationCap },
+      { label: "Industries", href: "/admin/industries", icon: Building2 },
+      { label: "Insights", href: "/admin/insights", icon: Newspaper },
+      { label: "Case Studies", href: "/admin/case-studies", icon: FolderKanban },
+      { label: "Team", href: "/admin/team", icon: Users },
+      { label: "Media Library", href: "/admin/media", icon: Images }
+    ]
+  },
+  {
+    label: "Enquiries",
+    items: [
+      { label: "Contacts", href: "/admin/contacts", icon: Mail },
+      { label: "Academy Enquiries", href: "/admin/training", icon: ClipboardList },
+      { label: "Email Configuration", href: "/admin/email", icon: MailCheck }
+    ]
+  },
+  {
+    label: "System",
+    items: [
+      { label: "Redirects", href: "/admin/redirects", icon: Share2 },
+      { label: "Site Settings", href: "/admin/settings", icon: Settings }
+    ]
+  }
 ]
 
-export function AdminNav() {
+export function AdminNav({ collapsed = false }: { collapsed?: boolean }) {
   const pathname = usePathname()
+
   return (
-    <nav className="flex flex-col gap-1">
-      {items.map((item) => {
-        const active =
-          item.href === "/admin"
-            ? pathname === "/admin"
-            : pathname.startsWith(item.href)
-        const Icon = item.icon
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              "flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors",
-              active
-                ? "bg-white/10 text-white"
-                : "text-white/60 hover:bg-white/5 hover:text-white"
-            )}
-          >
-            <Icon className={cn("h-4 w-4", active && "text-gold-400")} />
-            {item.label}
-          </Link>
-        )
-      })}
+    <nav className="flex flex-col gap-5" aria-label="CMS navigation">
+      {groups.map((group) => (
+        <div key={group.label} className="flex flex-col gap-1">
+          {collapsed ? (
+            <div className="mx-3 mb-1 h-px bg-cms-border" aria-hidden />
+          ) : (
+            <p className="px-3 pb-1 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-cms-muted">
+              {group.label}
+            </p>
+          )}
+          {group.items.map((item) => {
+            const active =
+              item.href === "/admin"
+                ? pathname === "/admin"
+                : pathname.startsWith(item.href)
+            const Icon = item.icon
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                title={collapsed ? item.label : undefined}
+                aria-label={item.label}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "group relative flex items-center rounded-xl text-sm font-medium transition-colors",
+                  collapsed ? "justify-center px-0 py-2.5" : "gap-3 px-3 py-2.5",
+                  active
+                    ? "bg-cms-active text-cms-navy"
+                    : "text-cms-text hover:bg-cms-active/60 hover:text-cms-navy"
+                )}
+              >
+                {active && (
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-gold-500",
+                      collapsed && "left-1"
+                    )}
+                  />
+                )}
+                <Icon
+                  className={cn(
+                    "h-[1.15rem] w-[1.15rem] shrink-0",
+                    active
+                      ? "text-cms-navy"
+                      : "text-cms-muted group-hover:text-cms-navy"
+                  )}
+                />
+                {!collapsed && <span className="truncate">{item.label}</span>}
+              </Link>
+            )
+          })}
+        </div>
+      ))}
     </nav>
   )
 }
 
-export function AdminBrand() {
+export function AdminBrand({ collapsed = false }: { collapsed?: boolean }) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="inline-flex rounded-lg bg-white p-1.5">
-        <Image
-          src="/images/brand/milven-logo.png"
-          alt="Milven"
-          width={241}
-          height={100}
-          className="h-8 w-auto"
-        />
-      </span>
-      <span className="rounded-full border border-gold-500/40 px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-gold-400">
-        CMS
-      </span>
-    </div>
+    <Link
+      href="/admin"
+      aria-label="Milven CMS dashboard"
+      className={cn("flex items-center gap-3", collapsed && "justify-center")}
+    >
+      <Image
+        src={collapsed ? "/icon.png" : "/images/brand/milven-logo.png"}
+        alt="Milven Consulting"
+        width={collapsed ? 40 : 241}
+        height={collapsed ? 40 : 100}
+        priority
+        className={cn("w-auto", collapsed ? "h-8 rounded-md object-contain" : "h-9")}
+      />
+      {!collapsed && (
+        <span className="flex min-w-0 flex-col leading-tight">
+          <span className="text-sm font-semibold tracking-[0.12em] text-cms-navy">
+            MILVEN CMS
+          </span>
+          <span className="truncate text-[0.7rem] text-cms-muted">
+            Website Administration
+          </span>
+        </span>
+      )}
+    </Link>
   )
 }
 
-export function ViewSiteLink() {
+export function ViewSiteLink({ collapsed = false }: { collapsed?: boolean }) {
   return (
     <Link
       href="/"
       target="_blank"
-      className="flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm text-white/70 transition-colors hover:bg-white/5 hover:text-white"
+      title={collapsed ? "View website" : undefined}
+      aria-label="View website"
+      className={cn(
+        "flex items-center rounded-xl border border-cms-border text-sm font-medium text-cms-text transition-colors hover:bg-cms-active hover:text-cms-navy",
+        collapsed ? "justify-center px-0 py-2.5" : "gap-2 px-3 py-2.5"
+      )}
     >
-      <ExternalLink className="h-4 w-4" />
-      View website
+      <ExternalLink className="h-4 w-4 text-cms-muted" />
+      {!collapsed && <span>View website</span>}
     </Link>
   )
 }
