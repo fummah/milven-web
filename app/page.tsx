@@ -37,9 +37,9 @@ export default async function Home() {
     Array.isArray(content.heroImages) && content.heroImages.length > 0
       ? content.heroImages
       : [
-          page?.heroImage || "/images/home/hero-executive.jpg",
-          "/images/home/hero.jpg",
-          "/images/home/executive-meeting.jpg"
+          page?.heroImage || "/images/home/hero-advisory.jpg",
+          "/images/home/hero-systems.jpg",
+          "/images/home/hero-academy.jpg"
         ]
 
   return (

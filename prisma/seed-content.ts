@@ -114,15 +114,15 @@ export const seedPages: Record<string, any> = {
     heroTitle: "Better Decisions. Better Businesses. Better Leaders.",
     heroText:
       "Milven Consulting Services combines strategy, finance, business transformation and executive development to help ambitious organisations perform at their best.",
-    heroImage: "/images/home/hero-executive.jpg",
+    heroImage: "/images/home/hero-advisory.jpg",
     content: {
       eyebrow: "Advisory & Transformation",
       signature:
         "We help organisations make better decisions, build better systems and develop better leaders.",
       heroImages: [
-        "/images/home/hero-executive.jpg",
-        "/images/home/hero.jpg",
-        "/images/home/executive-meeting.jpg"
+        "/images/home/hero-advisory.jpg",
+        "/images/home/hero-systems.jpg",
+        "/images/home/hero-academy.jpg"
       ],
       heroMetrics: [
         { value: "50+", label: "Projects Completed" },
